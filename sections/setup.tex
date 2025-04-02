@@ -1,0 +1,26 @@
+\section{Setup}
+
+\subsection{Prerequisites}
+Before starting, ensure the following tools are installed:
+\begin{itemize}
+    \item Docker and Docker Compose
+    \item Python 3.8+ with \texttt{pyyaml} installed
+    \item Node.js for dashboard development
+\end{itemize}
+
+\subsection{Environment Setup}
+\begin{enumerate}
+    \item Clone the repository:
+    \begin{verbatim}
+    git clone https://github.com/RenatoMignone/SoftEther-VPN-Guardian.git
+    cd SoftEther-VPN-Guardian
+    \end{verbatim}
+    \item Run the dependency installation script:
+    \begin{verbatim}
+    ./Dependencies/dependencies.sh
+    \end{verbatim}
+    \item Start the Docker containers:
+    \begin{verbatim}
+    sudo docker-compose up -d
+    \end{verbatim}
+\end{enumerate}
