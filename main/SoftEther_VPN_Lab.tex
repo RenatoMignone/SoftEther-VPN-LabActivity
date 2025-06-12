@@ -1,0 +1,83 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{multirow}
+
+% Configure code listings
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{gray!10},
+    frame=single,
+    breaklines=true,
+    showstringspaces=false,
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red}
+}
+
+% Configure headers and footers
+\setlength{\headheight}{14.49998pt}
+\addtolength{\topmargin}{-2.49998pt}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{SoftEther VPN Lab Activity}
+\lhead{Politecnico di Torino}
+\cfoot{\thepage}
+
+\title{SoftEther VPN Lab Activity\\
+\large Virtual Private Networks Across the Internet}
+\author{Renato Mignone\\
+\small Student ID: s336973\\
+\small MSc in Cybersecurity Engineering\\
+\small Politecnico di Torino}
+
+\begin{document}
+
+% Title page
+\maketitle
+\thispagestyle{empty}
+
+% Add Politecnico logo and license section
+\vfill
+\begin{center}
+\includegraphics[width=0.3\textwidth]{../resources/General/polito_logo.png}
+\end{center}
+
+\newpage
+
+% License page
+\input{../sections/00_license.tex}
+
+\newpage
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Main content
+\input{../sections/01_introduction.tex}
+\input{../sections/02_theoretical_background.tex}
+\input{../sections/03_network_topology.tex}
+\input{../sections/04_initial_configuration.tex}
+\input{../sections/05_softether_server.tex}
+\input{../sections/06_ipsec_configuration.tex}
+\input{../sections/07_tls_configuration.tex}
+\input{../sections/08_verification_analysis.tex}
+\input{../sections/09_conclusion.tex}
+
+% Bibliography (if needed)
+% \bibliography{references}
+% \bibliographystyle{plain}
+
+\end{document}

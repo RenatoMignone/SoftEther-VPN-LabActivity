@@ -1,0 +1,122 @@
+\newpage
+
+\section{Theoretical Background}
+
+This section provides the theoretical foundation necessary to understand the Virtual Private Network technologies implemented in this laboratory. We examine the fundamental concepts of VPNs, the specific architecture of SoftEther VPN, and the security protocols that enable secure communication across untrusted networks.
+
+\subsection{Virtual Private Networks (VPNs)}
+
+Virtual Private Networks are network security solutions that provide connectivity over shared infrastructure while maintaining properties typically associated with private networks. VPNs create secure communication channels over potentially untrusted networks by implementing various security mechanisms at different layers of the network stack.\\
+
+\noindent
+\textbf{Core VPN Properties:}
+
+\noindent
+A VPN must provide several essential properties to ensure secure communication:
+
+\begin{itemize}
+    \item \textbf{Data Confidentiality:} Encryption algorithms protect data content from unauthorized access during transmission across public networks.
+    
+    \item \textbf{Data Integrity:} Cryptographic hash functions and message authentication codes ensure that data has not been modified in transit.
+    
+    \item \textbf{Authentication:} Both peer authentication (verifying the identity of communicating endpoints) and data origin authentication are essential for secure VPN operation.
+    
+    \item \textbf{Access Control:} VPNs implement policies that determine which traffic is permitted and how it should be processed.
+    
+    \item \textbf{Anti-Replay Protection:} Sequence numbers and timestamps prevent malicious replay of previously captured packets.
+\end{itemize}
+
+\noindent
+\textbf{VPN Classification:}
+
+\noindent
+VPNs can be classified based on their implementation approach and the network layers where security is enforced:
+
+\begin{itemize}
+    \item \textbf{Network Layer VPNs:} Operate at the IP layer (L3), such as IPSec-based ones
+    \item \textbf{Transport Layer VPNs:} Implement security at L4, including TLS/SSL VPNs
+    \item \textbf{Application Layer VPNs:} Provide security services at the application level
+\end{itemize}
+
+\subsection{SoftEther VPN Architecture}
+
+SoftEther VPN represents a unique approach to VPN implementation by providing a unified platform that supports multiple VPN protocols simultaneously. This multi-protocol capability enables direct comparison and evaluation of different VPN technologies within a single deployment.\\
+
+\noindent
+\textbf{Multi-Protocol Support:}
+
+\noindent
+SoftEther VPN's architecture is designed around the concept of \textit{protocol abstraction}, where different VPN protocols are implemented as modules within a common framework:
+
+\begin{itemize}
+    \item \textbf{IPSec Support:} Native implementation of both AH (Authentication Header) and ESP (Encapsulating Security Payload) protocols in tunnel mode
+    \item \textbf{SSL/TLS Support:} Built-in TLS server compatible with OpenVPN clients and other SSL VPN solutions
+    \item \textbf{L2TP Support:} Layer 2 Tunneling Protocol implementation for broader client compatibility
+    \item \textbf{SSTP Support:} Secure Socket Tunneling Protocol for environments with restrictive firewalls
+\end{itemize}
+
+\noindent
+\textbf{Virtual Hub Architecture:}
+
+\noindent
+The core of SoftEther VPN is the Virtual Hub concept, which acts as a virtual Ethernet switch that can:
+
+\begin{itemize}
+    \item Aggregate multiple VPN sessions from different protocols
+    \item Implement advanced routing and bridging capabilities
+    \item Provide centralized policy enforcement and logging
+    \item Support complex network topologies including site-to-site and remote access scenarios
+\end{itemize}
+
+\noindent
+\textbf{SecureNAT Functionality:}
+
+\noindent
+SoftEther VPN includes an integrated NAT (Network Address Translation) and DHCP server functionality called SecureNAT, which simplifies VPN client configuration by:
+
+\begin{itemize}
+    \item Automatically assigning IP addresses to VPN clients
+    \item Providing DNS resolution services
+    \item Enabling Internet access for VPN clients through NAT
+    \item Supporting both IPv4 and IPv6 addressing schemes
+\end{itemize}
+
+\subsection{IPSec Protocol Suite}
+
+Internet Protocol Security (\textbf{IPSec}) is a framework providing security at the IP layer by adding headers to IP packets. It can operate in transport mode (protecting payload only) or tunnel mode (encapsulating the entire packet), the latter being common for VPN gateways.
+
+\noindent
+One key component is the \textbf{Encapsulating Security Payload} (ESP), which provides confidentiality through encryption and may also include integrity and authentication. ESP protects the payload while leaving the outer header for routing. \textbf{Security Associations} (SAs) are agreements between peers that specify parameters such as cryptographic algorithms, keys, and endpoints; each SA is identified by a Security Parameter Index (SPI). Automated management of these SAs is typically handled by Internet Key Exchange protocols: \textbf{IKEv1} (with main and aggressive modes) and \textbf{IKEv2} (which improves performance and security). In this project, IPSec (via ESP, SA, and IKE) is used to establish secure tunnels at the network layer for scenarios requiring kernel-level packet protection.
+
+\subsection{TLS/SSL for VPN Implementation}
+
+\textbf{Transport Layer Security} (TLS) provides session-layer security by performing a handshake to negotiate cipher suites, authenticate the server (and optionally the client), exchange keys—often providing perfect forward secrecy—and then protecting application data in a record layer. TLS-based VPNs (such as \textbf{OpenVPN}) encapsulate arbitrary IP traffic within a TLS channel, leveraging TLS’s widespread support and flexible cipher negotiation. This approach places security processing in user space, which can be easier to deploy and customize, though with some performance trade-offs compared to kernel-based solutions.
+
+\subsection{Client-Side VPN Technologies}
+
+\textbf{StrongSwan (IPSec):}
+
+\noindent
+strongSwan is an open-source IPSec implementation used in this project to establish and manage IPSec tunnels. It supports IKEv1 and IKEv2, a range of cryptographic algorithms, and features like NAT traversal and Dead Peer Detection. Configuration is driven by simple files (e.g., \texttt{ipsec.conf} and \texttt{ipsec.secrets}), and it integrates with the Linux kernel’s IPSec stack. In our setup, strongSwan handles automated key exchanges and maintains SAs for secure network-layer tunnels.\\
+
+\noindent
+\textbf{OpenVPN Client (TLS):}
+
+\noindent
+OpenVPN is the TLS-based client solution in this project. It uses OpenSSL for cryptography, handles both UDP and TCP transports, and can operate in tun (Layer 3) or tap (Layer 2) mode. Certificate-based authentication via an X.509 PKI ensures that only authorized endpoints connect. OpenVPN’s user-space implementation allows flexible scripting hooks and logging, making it suitable for custom remote-access scenarios in the laboratory.
+
+\subsection{Comparative Analysis Framework}
+
+Understanding the theoretical differences between IPSec and TLS implementations lays the groundwork for practical comparison:
+
+\begin{itemize}
+    \item \textbf{Architecture Differences:} IPSec is implemented at the network layer (often in kernel space), whereas TLS-based VPNs run in user space at the session layer.
+    
+    \item \textbf{Performance Considerations:} IPSec generally has lower overhead due to kernel integration; TLS-based VPNs offer more flexibility but may incur extra processing in user space.
+    
+    \item \textbf{Deployment Complexity:} IPSec setups can be more complex but follow well-established standards, while TLS-based VPNs like OpenVPN often allow simpler initial configuration and greater customization.
+    
+\end{itemize}
+
+
+This theoretical foundation establishes the necessary knowledge base for understanding the practical implementation and comparison of SoftEther VPN's multi-protocol capabilities in the subsequent sections of this laboratory activity.

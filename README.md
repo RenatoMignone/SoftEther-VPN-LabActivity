@@ -1,6 +1,6 @@
 # SoftEther-VPN-LabActivity
 
-![Politecnico di Torino](resources/logo_polito.jpg)
+![Politecnico di Torino](resources/General/logo_polito.jpg)
 
 This repository is designed to create a lab activity based on the experimental activity of SoftEtherVPN. It provides hands-on exercises for enhancing the security and observability of SoftEther VPN deployments.
 
@@ -13,13 +13,9 @@ The lab activity is derived from the project defined in the `SoftEther-VPN-Guard
 ├── main/                    # Main LaTeX files for the lab report
 │   ├── main.tex             # Main LaTeX document
 │   └── sections/            # Individual sections of the lab report
-├── Examples/                # Example lab activities and configurations
-├── SoftEther-VPN-Guardian/  # Guardian project with audit and monitoring tools
-│   ├── vpn1_config/         # Configuration for VPN Server 1
-│   ├── vpn2_config/         # Configuration for VPN Server 2
-│   ├── audit-scripts/       # Scripts for auditing configurations
-│   ├── dashboard/           # Grafana dashboard for monitoring
-│   └── docker-compose.yml   # Docker Compose file for deployment
+├── Utilities/               # PDF files needed
+│   ├── Examples             # Contains the PDF file for the lab activity example
+│   └── Project_Structure    # PDF file for the structure of the project
 └── README.md                # This README file
 ```
 

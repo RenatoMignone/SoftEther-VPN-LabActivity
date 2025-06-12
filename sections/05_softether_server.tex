@@ -1,0 +1,308 @@
+\newpage
+
+\section{SoftEther VPN Server Configuration}
+
+This section details the configuration and deployment of the SoftEther VPN server within the Docker container environment. The server provides multi-protocol VPN services, supporting both IPSec and TLS/SSL connections simultaneously through a unified management interface.
+
+\subsection{Server Installation and Initialization}
+
+The SoftEther VPN server runs within a Docker container using the pre-built image \texttt{siomiz/softethervpn:latest}. This containerized approach provides several advantages including isolation, portability, and simplified deployment.
+
+\subsubsection{Container Deployment}
+
+The server container has been configured in GNS3 with persistent storage directories as detailed in Section 4. When the container starts, the SoftEther VPN service initializes automatically with the following characteristics:
+
+\begin{itemize}
+    \item \textbf{Automatic Service Start:} The VPN server daemon starts automatically when the container boots, thanks to the persistent storage configuration that we will see later, the server will start already with the proper configuration.
+    \item \textbf{Multi-Protocol Listeners:} Simultaneous support for IPSec, SSL/TLS
+    \item \textbf{Network Integration:} Automatic integration with the container's network interface (eth0)
+\end{itemize}
+
+\subsubsection{Service Verification}
+
+To verify the SoftEther VPN server is running correctly, execute the following commands within the server container:
+
+\begin{lstlisting}[language=bash]
+# Check if SoftEther VPN server process is running
+ps aux | grep vpnserver
+
+# Verify VPN server is listening on required ports
+ss -tuln | grep -E '(443|500|4500|992|5555)'
+
+# Expected output should show listeners on:
+# tcp LISTEN 0.0.0.0:443   (HTTPS/SSL VPN)
+# udp LISTEN 0.0.0.0:500   (ISAKMP/IKE)
+# udp LISTEN 0.0.0.0:4500  (NAT-T)
+# tcp LISTEN 0.0.0.0:992   (Alternative SSL port)
+# tcp LISTEN 0.0.0.0:5555  (Management/API)
+\end{lstlisting}
+
+\subsection{Configuration File Analysis}
+
+The SoftEther VPN server configuration is managed through the \texttt{vpn\_server.config} file, which contains comprehensive settings for all VPN protocols, virtual hubs, user management, and security policies.
+
+\subsubsection{Core Server Settings}
+
+The server configuration includes several critical components:
+
+\begin{lstlisting}[language=bash]
+# Core server configuration parameters
+declare ServerConfiguration
+{
+    bool AcceptOnlyTls false                    # Accept non-TLS connections
+    string CipherName DHE-RSA-AES256-SHA       # Default cipher suite
+    bool DisableIPsecAggressiveMode false      # Allow IPSec aggressive mode
+    bool DisableNatTraversal false             # Enable NAT traversal
+    bool DisableOpenVPNServer false            # Enable OpenVPN compatibility
+    bool DisableSSTPServer false               # Enable SSTP protocol
+    uint MaxConnectionsPerIP 256               # Connection limit per IP
+    bool SaveDebugLog true                     # Enable debug logging
+}
+\end{lstlisting}
+
+\textbf{Key Configuration Parameters:}
+
+\begin{itemize}
+    \item \textbf{Multi-Protocol Support:} All major VPN protocols are enabled by default
+    \item \textbf{NAT Traversal:} Essential for clients behind NAT devices
+    \item \textbf{Security Settings:} Strong cipher suites with DHE for perfect forward secrecy
+    \item \textbf{Connection Limits:} Reasonable limits to prevent resource exhaustion
+    \item \textbf{Logging:} Comprehensive logging for troubleshooting and analysis
+\end{itemize}
+
+\subsubsection{Protocol Listener Configuration}
+
+The server configures multiple listeners for different VPN protocols:
+
+\begin{lstlisting}[language=bash]
+declare ListenerList
+{
+    declare Listener0  # HTTPS/SSL VPN
+    {
+        bool Enabled true
+        uint Port 443
+    }
+    declare Listener1  # ISAKMP/IKE
+    {
+        bool Enabled true
+        uint Port 500
+    }
+    declare Listener2  # Alternative SSL
+    {
+        bool Enabled true
+        uint Port 992
+    }
+    declare Listener3  # NAT-T
+    {
+        bool Enabled true
+        uint Port 4500
+    }
+    declare Listener4  # Management/API
+    {
+        bool Enabled true
+        uint Port 5555
+    }
+}
+\end{lstlisting}
+
+\subsection{Virtual Hub and User Management}
+
+SoftEther VPN organizes connections through Virtual Hubs, which act as virtual Ethernet switches. The default configuration includes a single hub named "DEFAULT" with basic user authentication.
+
+\subsubsection{Default Virtual Hub Configuration}
+
+The DEFAULT hub provides the following services:
+
+\begin{itemize}
+    \item \textbf{User Authentication:} Password-based authentication for VPN clients
+    \item \textbf{SecureNAT:} Integrated DHCP and NAT services for client IP assignment
+    \item \textbf{Access Control:} Configurable policies for traffic filtering and routing
+    \item \textbf{Logging:} Comprehensive logging of user sessions and traffic
+\end{itemize}
+
+\subsubsection{User Account Management}
+
+The server includes a test user account for VPN authentication:
+
+\begin{lstlisting}[language=bash]
+declare UserList
+{
+    declare user1
+    {
+        byte AuthPassword ObNWU1DckHL0Xg4HuyRAMKiIANY=    # Password: "ciao"
+        uint AuthType 1                                   # Password authentication
+        string Note $                                     # No additional notes
+        string RealName $                                 # No real name specified
+    }
+}
+\end{lstlisting}
+
+\textbf{User Authentication Details:}
+\begin{itemize}
+    \item \textbf{Username:} user1
+    \item \textbf{Password:} ciao (hashed in configuration)
+    \item \textbf{Authentication Method:} Password-based (Type 1)
+    \item \textbf{Access Level:} Standard user privileges
+\end{itemize}
+
+\subsection{IPSec Protocol Configuration}
+
+The SoftEther VPN server includes native IPSec support, allowing standard IPSec clients to connect without additional software.
+
+\subsubsection{IPSec Settings}
+
+\begin{lstlisting}[language=bash]
+declare IPsec
+{
+    bool EtherIP_IPsec true                    # Enable EtherIP over IPSec
+    string IPsec_Secret ciao                   # Pre-shared key for IPSec
+    string L2TP_DefaultHub DEFAULT             # Default hub for L2TP connections
+    bool L2TP_IPsec false                     # Disable L2TP/IPSec (using native IPSec)
+    bool L2TP_Raw false                       # Disable raw L2TP
+}
+\end{lstlisting}
+
+\textbf{IPSec Configuration Details:}
+
+\begin{itemize}
+    \item \textbf{EtherIP Support:} Enables Ethernet-over-IP tunneling for layer-2 VPN functionality
+    \item \textbf{Pre-Shared Key:} "ciao" - used for IPSec authentication (matches client configuration)
+    \item \textbf{Default Hub:} All IPSec connections are directed to the DEFAULT virtual hub
+    \item \textbf{Protocol Mode:} Native IPSec implementation rather than L2TP/IPSec combination
+\end{itemize}
+
+\subsection{SSL/TLS Protocol Configuration}
+
+The server provides SSL/TLS VPN services compatible with OpenVPN clients and other SSL VPN solutions.
+
+\subsubsection{TLS Settings and Certificates}
+
+The server uses self-signed certificates for TLS connections:
+
+\begin{lstlisting}[language=bash]
+# TLS configuration parameters
+string OpenVPNDefaultClientOption dev-type$20tun,link-mtu$201500,tun-mtu$201500,cipher$20AES-128-CBC,auth$20SHA1,keysize$20128,key-method$202,tls-client
+string OpenVPN_UdpPortList 1194
+bool DisableOpenVPNServer false
+\end{lstlisting}
+
+\textbf{SSL/TLS Features:}
+
+\begin{itemize}
+    \item \textbf{OpenVPN Compatibility:} Full compatibility with standard OpenVPN clients
+    \item \textbf{Cipher Support:} AES-128-CBC encryption with SHA1 authentication
+    \item \textbf{TUN Interface:} Layer-3 tunneling for IP packet forwarding
+    \item \textbf{UDP Transport:} Default UDP transport on port 1194 (configurable)
+    \item \textbf{Certificate-Based Authentication:} X.509 certificate validation for enhanced security
+\end{itemize}
+
+\subsection{SecureNAT Configuration}
+
+SecureNAT provides integrated DHCP and NAT services for VPN clients, simplifying client configuration and enabling Internet access.
+
+\subsubsection{Virtual DHCP Server}
+
+\begin{lstlisting}[language=bash]
+declare VirtualDhcpServer
+{
+    string DhcpDnsServerAddress 192.168.30.1        # DNS server for clients
+    string DhcpDnsServerAddress2 0.0.0.0           # Secondary DNS (disabled)
+    bool DhcpEnabled true                          # Enable DHCP service
+    uint DhcpExpireTimeSpan 7200                   # 2-hour lease time
+    string DhcpGatewayAddress 192.168.30.1         # Default gateway
+    string DhcpLeaseIPStart 192.168.30.10          # DHCP pool start
+    string DhcpLeaseIPEnd 192.168.30.200           # DHCP pool end
+    string DhcpSubnetMask 255.255.255.0            # Subnet mask
+}
+\end{lstlisting}
+
+\subsubsection{Virtual Router and NAT}
+
+\begin{lstlisting}[language=bash]
+declare VirtualRouter
+{
+    bool NatEnabled true                           # Enable NAT functionality
+    uint NatMtu 1500                              # MTU for NAT interface
+    uint NatTcpTimeout 3600                       # TCP connection timeout (1 hour)
+    uint NatUdpTimeout 1800                       # UDP connection timeout (30 minutes)
+}
+\end{lstlisting}
+
+\textbf{SecureNAT Benefits:}
+
+\begin{itemize}
+    \item \textbf{Automatic IP Assignment:} Clients receive IP addresses from 192.168.30.10-200 range
+    \item \textbf{DNS Services:} Integrated DNS resolution for VPN clients
+    \item \textbf{Internet Access:} NAT functionality enables clients to access external resources
+    \item \textbf{Simplified Configuration:} Clients require minimal manual network configuration
+\end{itemize}
+
+\subsection{Security and Certificate Management}
+
+The SoftEther VPN server implements several security mechanisms to protect VPN communications and server integrity.
+
+\subsubsection{Server Certificates}
+
+The server uses self-signed X.509 certificates for TLS operations:
+
+\begin{itemize}
+    \item \textbf{Certificate Subject:} da3af5075c51 (unique identifier)
+    \item \textbf{Key Length:} 2048-bit RSA
+    \item \textbf{Validity Period:} Long-term validity for laboratory use
+    \item \textbf{Usage:} Server authentication for TLS/SSL connections
+\end{itemize}
+
+\subsubsection{Security Policies}
+
+The server implements several security policies:
+
+\begin{lstlisting}[language=bash]
+# Security-related settings
+bool DisableDosProction false                     # Enable DoS protection
+bool DisableSessionReconnect false                # Allow session reconnection
+uint MaxConcurrentDnsClientThreads 512           # DNS thread limit
+uint MaxUnestablishedConnections 1000            # Connection limit
+bool NoSendSignature false                       # Send server signature
+\end{lstlisting}
+
+\textbf{Security Features:}
+
+\begin{itemize}
+    \item \textbf{DoS Protection:} Built-in protection against denial-of-service attacks
+    \item \textbf{Connection Limits:} Prevents resource exhaustion through connection limiting
+    \item \textbf{Session Management:} Secure session handling with reconnection support
+    \item \textbf{Authentication:} Multiple authentication methods including certificates and passwords
+\end{itemize}
+
+\subsection{Operational Verification}
+
+After configuration, verify the server is operating correctly and ready to accept VPN connections.
+
+\subsubsection{Service Status Check}
+
+\begin{lstlisting}[language=bash]
+# Verify all VPN protocols are listening
+netstat -tuln | grep -E '(443|500|4500|992|5555)'
+
+# Check server logs for any errors
+tail -f /usr/vpnserver/server_log/vpn_*
+
+# Test connectivity from client network
+# From client container:
+ping 203.0.113.1    # Should reach server's public IP
+telnet 203.0.113.1 443  # Should connect to HTTPS port
+\end{lstlisting}
+
+\subsubsection{Configuration Validation}
+
+Ensure the server configuration supports both IPSec and SSL/TLS protocols:
+
+\begin{itemize}
+    \item \textbf{IPSec Listeners:} Ports 500 (ISAKMP) and 4500 (NAT-T) are active
+    \item \textbf{SSL/TLS Listeners:} Ports 443 and 992 are accepting connections
+    \item \textbf{User Authentication:} Test user "user1" is configured and accessible
+    \item \textbf{Virtual Hub:} DEFAULT hub is operational with SecureNAT enabled
+    \item \textbf{NAT Forwarding:} Router forwarding rules are directing traffic correctly
+\end{itemize}
+
+The SoftEther VPN server is now configured and ready to accept connections from both IPSec and SSL/TLS VPN clients. The next sections will detail the configuration of these client types and demonstrate secure tunnel establishment across the simulated Internet infrastructure.

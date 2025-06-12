@@ -1,0 +1,341 @@
+\newpage
+
+\section{Initial Network Configuration}
+
+This section details the step-by-step process of setting up the laboratory environment, including GNS3 configuration, router setup, and Docker container deployment. The configuration establishes the basic network infrastructure that will support the VPN implementations.
+
+\subsection{GNS3 Environment Setup}
+
+The laboratory utilizes GNS3 (Graphical Network Simulator-3) to create a realistic network topology. GNS3 provides the platform for simulating Cisco routers, Docker containers, and network connectivity required for the VPN demonstration.
+
+\subsubsection{Device Import and Template Creation}
+
+\textbf{Cisco Router Template:}
+
+\noindent
+The topology requires Cisco 7200 routers running IOS version 124-24.T5. This specific IOS image is chosen because it represents a freely available alternative to modern commercial Cisco IOS versions. While newer platforms like IOSv (IOS Virtual) offer enhanced features and performance, they require valid Cisco licensing agreements which can be costly for educational purposes. The 124-24.T5 image, although older and not widely deployed in current production environments, provides all the fundamental routing and NAT capabilities required for this laboratory exercise.
+
+\noindent
+To import the router template:
+
+\begin{enumerate}
+    \item Open GNS3 and click the router icon in the left panel
+    \item Select "New Template" at the bottom
+    \item Choose "Install an appliance from the GNS3 server"
+    \item Filter by "CISCO" and locate "Cisco 7200"
+    \item Install the template and select version "124-24.T5"
+    \item Import the router image file to complete the setup
+\end{enumerate}
+
+\noindent
+\textbf{Docker Container Setup:}
+
+\noindent
+Two Docker containers are required for the VPN endpoints:
+
+\begin{itemize}
+    \item \textbf{Server Container Image:} \texttt{siomiz/softethervpn:latest}
+    \item \textbf{Client Container Image:} \texttt{ubuntu:latest}
+\end{itemize}
+
+\noindent
+To add containers to the GNS3 project:
+
+\begin{enumerate}
+    \item Navigate to Edit → Preferences in GNS3
+    \item Select "Docker containers" from the left panel
+    \item Click "New" to add a container
+    \item Enter the image name (e.g., \texttt{siomiz/softethervpn:latest})
+    \item Configure the container name and complete the setup
+    \item Repeat for the Ubuntu client container
+\end{enumerate}
+
+\noindent
+You will now see the containers in the left panel of GNS3, ready to be dragged into the workspace.
+
+\subsection{Router Configuration}
+
+The network topology requires three routers with specific configurations to simulate realistic Internet connectivity and routing behavior.
+
+\subsubsection{ISP Router (R1-Router-ISP)}
+
+The ISP router provides Internet connectivity and inter-site routing. The configuration includes interface setup, MAC address spoofing for DHCP, and routing table entries.
+
+\begin{lstlisting}[language=bash]
+enable
+configure terminal
+
+# Configure interface to Router 2 (Server-side)
+interface FastEthernet0/0
+  ip address 203.0.113.254 255.255.255.0
+  no shutdown
+exit
+
+# Configure interface to Router 3 (Client-side)  
+interface FastEthernet0/1
+  ip address 198.51.100.254 255.255.255.0
+  no shutdown
+exit
+
+# Configure Internet interface with DHCP and MAC spoofing
+interface FastEthernet1/0
+  mac-address xxxx.xxxx.xxxx  # Replace with host machine MAC
+  ip address dhcp
+  no shutdown
+exit
+
+# Configure static routes for private networks
+ip route 198.51.100.0 255.255.255.0 FastEthernet0/1
+ip route 203.0.113.0 255.255.255.0 FastEthernet0/0
+
+# Configure default route to Internet
+ip route 0.0.0.0 0.0.0.0 FastEthernet1/0
+
+end
+write memory
+\end{lstlisting}
+
+\noindent
+\textbf{Important Note - MAC Address Spoofing:} 
+
+\noindent
+The MAC address spoofing is necessary because the Politecnico di Torino WiFi network's DHCP server implements MAC address filtering for security purposes. Without using the host machine's MAC address, the DHCP server will not assign a valid IP address to the router interface, preventing Internet connectivity for the simulated network.
+
+\noindent
+To obtain your host machine's MAC address:
+
+\begin{lstlisting}[language=bash]
+# Display all network interfaces and their MAC addresses
+ip a
+
+# Look for the active network interface (usually wlan0 for WiFi or eth0 for Ethernet)
+# The MAC address appears after "link/ether"
+# Example output:
+# 2: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+#     link/ether 1c:ce:51:3f:98:20 brd ff:ff:ff:ff:ff:ff
+\end{lstlisting}
+
+Copy the MAC address from your active network interface and convert it to Cisco format by adding dots every four characters:
+\begin{itemize}
+    \item \textbf{Linux format:} 1c:ce:51:3f:98:20
+    \item \textbf{Cisco format:} 1cce.513f.9820
+\end{itemize}
+
+Replace \texttt{xxxx.xxxx.xxxx} in the configuration with your converted MAC address.
+
+\subsubsection{Server-Side Router (R2-Router-Server)}
+
+This router connects the server's private network to the Internet and implements NAT with port forwarding for VPN services.
+
+\begin{lstlisting}[language=bash]
+enable
+configure terminal
+
+# Configure LAN interface (connected to server)
+interface FastEthernet0/0
+  ip address 10.0.1.1 255.255.255.0
+  ip nat inside
+  no shutdown
+exit
+
+# Configure WAN interface (connected to ISP)
+interface FastEthernet0/1
+  ip address 203.0.113.1 255.255.255.0
+  ip nat outside
+  no shutdown
+exit
+
+# Configure static NAT for VPN services
+ip nat inside source static udp 10.0.1.2 500 203.0.113.1 500
+ip nat inside source static udp 10.0.1.2 4500 203.0.113.1 4500
+ip nat inside source static tcp 10.0.1.2 443 203.0.113.1 443
+
+# Configure PAT for general Internet access
+access-list 1 permit 10.0.1.0 0.0.0.255
+ip nat inside source list 1 interface FastEthernet0/1 overload
+
+# Configure default route
+ip route 0.0.0.0 0.0.0.0 FastEthernet0/1
+
+end
+write memory
+\end{lstlisting}
+
+\textbf{Port Forwarding Explanation:}
+\begin{itemize}
+    \item \textbf{Port 500/UDP:} ISAKMP (Internet Security Association and Key Management Protocol)
+    \item \textbf{Port 4500/UDP:} NAT-T (NAT Traversal for IPSec)
+    \item \textbf{Port 443/TCP:} HTTPS/TLS for SSL VPN connectivity
+\end{itemize}
+
+\subsubsection{Client-Side Router (R3-Router-Client)}
+
+The client-side router provides NAT and routing for the client's private network.
+
+\begin{lstlisting}[language=bash]
+enable
+configure terminal
+
+# Configure LAN interface (connected to client)
+interface FastEthernet0/0
+  ip address 10.0.2.1 255.255.255.0
+  ip nat inside
+  no shutdown
+exit
+
+# Configure WAN interface (connected to ISP)
+interface FastEthernet0/1
+  ip address 198.51.100.1 255.255.255.0
+  ip nat outside
+  no shutdown
+exit
+
+# Configure default route
+ip route 0.0.0.0 0.0.0.0 FastEthernet0/1
+
+# Configure PAT for Internet access
+access-list 1 permit 10.0.2.0 0.0.0.255
+ip nat inside source list 1 interface FastEthernet0/1 overload
+
+end
+write memory
+\end{lstlisting}
+
+\subsection{Container Configuration}
+
+The Docker containers require specific configuration for persistent storage and network setup.
+
+\subsubsection{Server Container Setup}
+
+The SoftEther VPN server container needs persistent directories for configuration files:
+
+\begin{enumerate}
+    \item Open the server container configuration in GNS3
+    \item Navigate to Advanced Settings
+    \item Add the following additional directories:
+    \begin{itemize}
+        \item \texttt{/server}
+        \item \texttt{/usr/vpnserver}
+    \end{itemize}
+\end{enumerate}
+
+These directories will be created in the GNS3 project folder, allowing persistent storage of configuration files between container restarts.
+
+\textbf{Server Network Configuration:}
+
+Configure the server container's network interface:
+
+\begin{lstlisting}[language=bash]
+# Configure IP address and default route
+ip addr add 10.0.1.2/24 dev eth0
+ip route add default via 10.0.1.1
+
+# Verify network configuration
+ip addr show
+ip route show
+
+# Test connectivity to gateway
+ping 10.0.1.1
+\end{lstlisting}
+
+\subsubsection{Client Container Setup}
+
+The client container requires similar configuration for persistent storage:
+
+\begin{enumerate}
+    \item Open the client container configuration in GNS3
+    \item Navigate to Advanced Settings  
+    \item Add the additional directory: \texttt{/client}
+\end{enumerate}
+
+\textbf{Client Network Configuration:}
+
+Configure the client container's network interface and install required VPN software:
+
+\begin{lstlisting}[language=bash]
+# Configure network interface
+ip addr add 10.0.2.2/24 dev eth0
+ip route add default via 10.0.2.1
+
+# Update package repositories
+apt update
+
+# Install strongSwan for IPSec VPN
+apt install strongswan -y
+
+# Install OpenVPN for TLS VPN  
+apt install openvpn -y
+
+# Copy configuration files from persistent storage
+cp /client/ipsec.conf /etc/
+cp /client/ipsec.secrets /etc/
+
+# Verify network configuration
+ip addr show
+ip route show
+
+# Test connectivity to gateway
+ping 10.0.2.1
+\end{lstlisting}
+
+\subsection{Basic Connectivity Testing}
+
+Before proceeding with VPN configuration, verify that the basic network infrastructure is functioning correctly.
+
+\subsubsection{Inter-Router Connectivity}
+
+Test connectivity between routers to ensure proper routing:
+
+\begin{lstlisting}[language=bash]
+# From ISP Router - test connectivity to edge routers
+ping 203.0.113.1    # Should reach Server-side router
+ping 198.51.100.1   # Should reach Client-side router
+
+# From Server-side Router - test connectivity to ISP
+ping 203.0.113.254  # Should reach ISP router
+
+# From Client-side Router - test connectivity to ISP  
+ping 198.51.100.254 # Should reach ISP router
+\end{lstlisting}
+
+\subsubsection{End-to-End Connectivity}
+
+Test connectivity between the container endpoints:
+
+\begin{lstlisting}[language=bash]
+# From Server Container - test connectivity to public IPs
+ping 198.51.100.1   # Should reach Client-side router public IP
+
+# From Client Container - test connectivity to public IPs
+ping 203.0.113.1    # Should reach Server-side router public IP
+\end{lstlisting}
+
+\subsubsection{Service Verification}
+
+Verify that the SoftEther VPN server is running and listening on required ports:
+
+\begin{lstlisting}[language=bash]
+# Check if SoftEther VPN server is listening
+ss -tuln | grep -E '(443|500|4500)'
+
+# Expected output should show:
+# tcp LISTEN 0.0.0.0:443
+# udp LISTEN 0.0.0.0:500  
+# udp LISTEN 0.0.0.0:4500
+\end{lstlisting}
+
+\subsection{Network Infrastructure Validation}
+
+At this point, the basic network infrastructure should be operational with:
+
+\begin{itemize}
+    \item Three routers configured with appropriate IP addressing and routing
+    \item NAT services functioning on edge routers
+    \item Docker containers with network connectivity
+    \item SoftEther VPN server operational and accessible
+    \item Basic inter-site connectivity through the simulated Internet
+\end{itemize}
+
+This foundation enables the implementation of VPN services detailed in the subsequent sections. Any connectivity issues at this stage should be resolved before proceeding with VPN configuration, as they will prevent proper VPN tunnel establishment.
+
+The next section will detail the configuration of the SoftEther VPN server to provide multi-protocol VPN services for both IPSec and TLS-based connections.

@@ -1,0 +1,83 @@
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Laboratory Objectives}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}SoftEther VPN Overview}{4}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Laboratory Environment and Network Topology}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}System Requirements}{5}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Laboratory Structure}{6}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Theoretical Background}{7}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Virtual Private Networks (VPNs)}{7}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}SoftEther VPN Architecture}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}IPSec Protocol Suite}{8}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}TLS/SSL for VPN Implementation}{9}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Client-Side VPN Technologies}{9}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Comparative Analysis Framework}{9}{subsection.2.6}%
+\contentsline {section}{\numberline {3}Network Topology and Architecture}{10}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Topology Overview}{10}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}IP Addressing Scheme}{11}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Device Roles and Functions}{11}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}ISP Router (R1-Router-ISP)}{11}{subsubsection.3.3.1}%
+\contentsline {subsubsection}{\numberline {3.3.2}Server-Side Router (R2-Router-Server)}{12}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Client-Side Router (R3-Router-Client)}{12}{subsubsection.3.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.4}SoftEther VPN Server Container}{12}{subsubsection.3.3.4}%
+\contentsline {subsubsection}{\numberline {3.3.5}VPN Client Container}{12}{subsubsection.3.3.5}%
+\contentsline {subsection}{\numberline {3.4}Network Communication Flow}{13}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Security Considerations}{13}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Initial Network Configuration}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}GNS3 Environment Setup}{14}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Device Import and Template Creation}{14}{subsubsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.2}Router Configuration}{15}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}ISP Router (R1-Router-ISP)}{15}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Server-Side Router (R2-Router-Server)}{16}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Client-Side Router (R3-Router-Client)}{17}{subsubsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.3}Container Configuration}{18}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Server Container Setup}{18}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Client Container Setup}{18}{subsubsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.4}Basic Connectivity Testing}{19}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Inter-Router Connectivity}{19}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}End-to-End Connectivity}{19}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Service Verification}{19}{subsubsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.5}Network Infrastructure Validation}{20}{subsection.4.5}%
+\contentsline {section}{\numberline {5}SoftEther VPN Server Configuration}{21}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Server Installation and Initialization}{21}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Container Deployment}{21}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Service Verification}{21}{subsubsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.2}Configuration File Analysis}{22}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Core Server Settings}{22}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Protocol Listener Configuration}{22}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Virtual Hub and User Management}{23}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}Default Virtual Hub Configuration}{23}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}User Account Management}{23}{subsubsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.4}IPSec Protocol Configuration}{24}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}IPSec Settings}{24}{subsubsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.5}SSL/TLS Protocol Configuration}{24}{subsection.5.5}%
+\contentsline {subsubsection}{\numberline {5.5.1}TLS Settings and Certificates}{25}{subsubsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.6}SecureNAT Configuration}{25}{subsection.5.6}%
+\contentsline {subsubsection}{\numberline {5.6.1}Virtual DHCP Server}{25}{subsubsection.5.6.1}%
+\contentsline {subsubsection}{\numberline {5.6.2}Virtual Router and NAT}{26}{subsubsection.5.6.2}%
+\contentsline {subsection}{\numberline {5.7}Security and Certificate Management}{26}{subsection.5.7}%
+\contentsline {subsubsection}{\numberline {5.7.1}Server Certificates}{26}{subsubsection.5.7.1}%
+\contentsline {subsubsection}{\numberline {5.7.2}Security Policies}{26}{subsubsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.8}Operational Verification}{27}{subsection.5.8}%
+\contentsline {subsubsection}{\numberline {5.8.1}Service Status Check}{27}{subsubsection.5.8.1}%
+\contentsline {subsubsection}{\numberline {5.8.2}Configuration Validation}{27}{subsubsection.5.8.2}%
+\contentsline {section}{\numberline {6}IPSec VPN Configuration}{28}{section.6}%
+\contentsline {subsection}{\numberline {6.1}strongSwan Client Setup}{28}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}IPSec Configuration Files}{28}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}ipsec.conf Analysis}{28}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}ipsec.secrets Configuration}{28}{subsubsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.3}Connection Establishment}{28}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Traffic Analysis}{28}{subsection.6.4}%
+\contentsline {section}{\numberline {7}TLS/SSL VPN Configuration}{29}{section.7}%
+\contentsline {subsection}{\numberline {7.1}OpenVPN Client Setup}{29}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Certificate and Credential Management}{29}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}OpenVPN Configuration Analysis}{29}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}TLS Handshake and Connection}{29}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Encrypted Traffic Analysis}{29}{subsection.7.5}%
+\contentsline {section}{\numberline {8}Verification and Traffic Analysis}{30}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Connectivity Testing}{30}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Packet Capture and Analysis}{30}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}IPSec Traffic Analysis}{30}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}TLS Traffic Analysis}{30}{subsubsection.8.2.2}%
+\contentsline {subsection}{\numberline {8.3}Header Structure Analysis}{30}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Security Feature Verification}{30}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Conclusion}{30}{section.9}%
