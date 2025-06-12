@@ -13,7 +13,7 @@ The SoftEther VPN server runs within a Docker container using the pre-built imag
 The server container has been configured in GNS3 with persistent storage directories as detailed in Section 4. When the container starts, the SoftEther VPN service initializes automatically with the following characteristics:
 
 \begin{itemize}
-    \item \textbf{Automatic Service Start:} The VPN server daemon starts automatically when the container boots, thanks to the persistent storage configuration that we will see later, the server will start already with the proper configuration.
+    \item \textbf{Automatic Service Start:} The VPN server daemon starts automatically when the container boots, thanks to the persistent storage configuration, the server will start already with the proper configuration file.
     \item \textbf{Multi-Protocol Listeners:} Simultaneous support for IPSec, SSL/TLS
     \item \textbf{Network Integration:} Automatic integration with the container's network interface (eth0)
 \end{itemize}
@@ -27,13 +27,12 @@ To verify the SoftEther VPN server is running correctly, execute the following c
 ps aux | grep vpnserver
 
 # Verify VPN server is listening on required ports
-ss -tuln | grep -E '(443|500|4500|992|5555)'
+ss -tuln | grep -E '(443|500|4500|5555)'
 
 # Expected output should show listeners on:
 # tcp LISTEN 0.0.0.0:443   (HTTPS/SSL VPN)
 # udp LISTEN 0.0.0.0:500   (ISAKMP/IKE)
 # udp LISTEN 0.0.0.0:4500  (NAT-T)
-# tcp LISTEN 0.0.0.0:992   (Alternative SSL port)
 # tcp LISTEN 0.0.0.0:5555  (Management/API)
 \end{lstlisting}
 
@@ -49,14 +48,20 @@ The server configuration includes several critical components:
 # Core server configuration parameters
 declare ServerConfiguration
 {
-    bool AcceptOnlyTls false                    # Accept non-TLS connections
-    string CipherName DHE-RSA-AES256-SHA       # Default cipher suite
-    bool DisableIPsecAggressiveMode false      # Allow IPSec aggressive mode
-    bool DisableNatTraversal false             # Enable NAT traversal
-    bool DisableOpenVPNServer false            # Enable OpenVPN compatibility
-    bool DisableSSTPServer false               # Enable SSTP protocol
-    uint MaxConnectionsPerIP 256               # Connection limit per IP
-    bool SaveDebugLog true                     # Enable debug logging
+    # Accept non-TLS connections
+    bool AcceptOnlyTls false    
+    # Default cipher suite               
+    string CipherName DHE-RSA-AES256-SHA       
+    # Allow IPSec aggressive mode
+    bool DisableIPsecAggressiveMode false      
+    # Enable NAT traversal
+    bool DisableNatTraversal false             
+    # Enable OpenVPN compatibility
+    bool DisableOpenVPNServer false            
+    # Connection limit per IP
+    uint MaxConnectionsPerIP 256               
+    # Enable debug logging
+    bool SaveDebugLog true                     
 }
 \end{lstlisting}
 
@@ -87,17 +92,12 @@ declare ListenerList
         bool Enabled true
         uint Port 500
     }
-    declare Listener2  # Alternative SSL
-    {
-        bool Enabled true
-        uint Port 992
-    }
-    declare Listener3  # NAT-T
+    declare Listener2  # NAT-T
     {
         bool Enabled true
         uint Port 4500
     }
-    declare Listener4  # Management/API
+    declare Listener3  # Management/API
     {
         bool Enabled true
         uint Port 5555
@@ -114,7 +114,7 @@ SoftEther VPN organizes connections through Virtual Hubs, which act as virtual E
 The DEFAULT hub provides the following services:
 
 \begin{itemize}
-    \item \textbf{User Authentication:} Password-based authentication for VPN clients
+    \item \textbf{User Authentication:} basic Password-based authentication for VPN clients (not using the certificate authentication for the mutual authentication because of the lab environment)
     \item \textbf{SecureNAT:} Integrated DHCP and NAT services for client IP assignment
     \item \textbf{Access Control:} Configurable policies for traffic filtering and routing
     \item \textbf{Logging:} Comprehensive logging of user sessions and traffic
@@ -129,44 +129,40 @@ declare UserList
 {
     declare user1
     {
-        byte AuthPassword ObNWU1DckHL0Xg4HuyRAMKiIANY=    # Password: "ciao"
-        uint AuthType 1                                   # Password authentication
-        string Note $                                     # No additional notes
-        string RealName $                                 # No real name specified
+        # Password: "ciao" (hashed)
+        byte AuthPassword ObNWU1DckHL0Xg4HuyRAMKiIANY= 
+        # Password authentication   
+        uint AuthType 1                    
+        # No additional notes              
+        string Note $                                                    
     }
 }
 \end{lstlisting}
 
-\textbf{User Authentication Details:}
-\begin{itemize}
-    \item \textbf{Username:} user1
-    \item \textbf{Password:} ciao (hashed in configuration)
-    \item \textbf{Authentication Method:} Password-based (Type 1)
-    \item \textbf{Access Level:} Standard user privileges
-\end{itemize}
-
 \subsection{IPSec Protocol Configuration}
 
-The SoftEther VPN server includes native IPSec support, allowing standard IPSec clients to connect without additional software.
+The SoftEther VPN server includes native IPSec support, allowing standard IPSec clients to connect without additional software. The pre-shared key is not a strong one here, but it is suitable for laboratory use.
 
 \subsubsection{IPSec Settings}
 
 \begin{lstlisting}[language=bash]
 declare IPsec
-{
-    bool EtherIP_IPsec true                    # Enable EtherIP over IPSec
-    string IPsec_Secret ciao                   # Pre-shared key for IPSec
-    string L2TP_DefaultHub DEFAULT             # Default hub for L2TP connections
-    bool L2TP_IPsec false                     # Disable L2TP/IPSec (using native IPSec)
-    bool L2TP_Raw false                       # Disable raw L2TP
+{               
+    # Pre-shared key for IPSec  
+    string IPsec_Secret ciao                   
+    # Default hub for L2TP connections
+    string L2TP_DefaultHub DEFAULT    
+    # Disable L2TP/IPSec (using native IPSec)         
+    bool L2TP_IPsec false                      
+    # Disable raw L2TP
+    bool L2TP_Raw false                        
 }
 \end{lstlisting}
 
 \textbf{IPSec Configuration Details:}
 
 \begin{itemize}
-    \item \textbf{EtherIP Support:} Enables Ethernet-over-IP tunneling for layer-2 VPN functionality
-    \item \textbf{Pre-Shared Key:} "ciao" - used for IPSec authentication (matches client configuration)
+    \item \textbf{Pre-Shared Key:} "ciao" - used for IPSec authentication
     \item \textbf{Default Hub:} All IPSec connections are directed to the DEFAULT virtual hub
     \item \textbf{Protocol Mode:} Native IPSec implementation rather than L2TP/IPSec combination
 \end{itemize}
@@ -182,8 +178,6 @@ The server uses self-signed certificates for TLS connections:
 \begin{lstlisting}[language=bash]
 # TLS configuration parameters
 string OpenVPNDefaultClientOption dev-type$20tun,link-mtu$201500,tun-mtu$201500,cipher$20AES-128-CBC,auth$20SHA1,keysize$20128,key-method$202,tls-client
-string OpenVPN_UdpPortList 1194
-bool DisableOpenVPNServer false
 \end{lstlisting}
 
 \textbf{SSL/TLS Features:}
@@ -192,41 +186,12 @@ bool DisableOpenVPNServer false
     \item \textbf{OpenVPN Compatibility:} Full compatibility with standard OpenVPN clients
     \item \textbf{Cipher Support:} AES-128-CBC encryption with SHA1 authentication
     \item \textbf{TUN Interface:} Layer-3 tunneling for IP packet forwarding
-    \item \textbf{UDP Transport:} Default UDP transport on port 1194 (configurable)
     \item \textbf{Certificate-Based Authentication:} X.509 certificate validation for enhanced security
 \end{itemize}
 
 \subsection{SecureNAT Configuration}
 
 SecureNAT provides integrated DHCP and NAT services for VPN clients, simplifying client configuration and enabling Internet access.
-
-\subsubsection{Virtual DHCP Server}
-
-\begin{lstlisting}[language=bash]
-declare VirtualDhcpServer
-{
-    string DhcpDnsServerAddress 192.168.30.1        # DNS server for clients
-    string DhcpDnsServerAddress2 0.0.0.0           # Secondary DNS (disabled)
-    bool DhcpEnabled true                          # Enable DHCP service
-    uint DhcpExpireTimeSpan 7200                   # 2-hour lease time
-    string DhcpGatewayAddress 192.168.30.1         # Default gateway
-    string DhcpLeaseIPStart 192.168.30.10          # DHCP pool start
-    string DhcpLeaseIPEnd 192.168.30.200           # DHCP pool end
-    string DhcpSubnetMask 255.255.255.0            # Subnet mask
-}
-\end{lstlisting}
-
-\subsubsection{Virtual Router and NAT}
-
-\begin{lstlisting}[language=bash]
-declare VirtualRouter
-{
-    bool NatEnabled true                           # Enable NAT functionality
-    uint NatMtu 1500                              # MTU for NAT interface
-    uint NatTcpTimeout 3600                       # TCP connection timeout (1 hour)
-    uint NatUdpTimeout 1800                       # UDP connection timeout (30 minutes)
-}
-\end{lstlisting}
 
 \textbf{SecureNAT Benefits:}
 
@@ -236,10 +201,6 @@ declare VirtualRouter
     \item \textbf{Internet Access:} NAT functionality enables clients to access external resources
     \item \textbf{Simplified Configuration:} Clients require minimal manual network configuration
 \end{itemize}
-
-\subsection{Security and Certificate Management}
-
-The SoftEther VPN server implements several security mechanisms to protect VPN communications and server integrity.
 
 \subsubsection{Server Certificates}
 
@@ -258,11 +219,16 @@ The server implements several security policies:
 
 \begin{lstlisting}[language=bash]
 # Security-related settings
-bool DisableDosProction false                     # Enable DoS protection
-bool DisableSessionReconnect false                # Allow session reconnection
-uint MaxConcurrentDnsClientThreads 512           # DNS thread limit
-uint MaxUnestablishedConnections 1000            # Connection limit
-bool NoSendSignature false                       # Send server signature
+# Enable DoS protection
+bool DisableDosProction false                     
+# Allow session reconnection
+bool DisableSessionReconnect false               
+# DNS thread limit 
+uint MaxConcurrentDnsClientThreads 512           
+# Connection limit
+uint MaxUnestablishedConnections 1000            
+# Send server signature
+bool NoSendSignature false                       
 \end{lstlisting}
 
 \textbf{Security Features:}
@@ -283,9 +249,6 @@ After configuration, verify the server is operating correctly and ready to accep
 \begin{lstlisting}[language=bash]
 # Verify all VPN protocols are listening
 netstat -tuln | grep -E '(443|500|4500|992|5555)'
-
-# Check server logs for any errors
-tail -f /usr/vpnserver/server_log/vpn_*
 
 # Test connectivity from client network
 # From client container:
