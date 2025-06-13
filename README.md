@@ -1,6 +1,6 @@
 # SoftEther VPN Laboratory Activity
 
-![Politecnico di Torino](resources/General/logo_polito.png)
+![Politecnico di Torino](resources/General/logo_polito.jpg)
 
 ## Overview
 
