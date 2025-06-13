@@ -22,7 +22,7 @@ The network architecture follows an end-to-end VPN design where:
     \item \textbf{Client Site:} Represents a remote branch office requiring VPN connectivity
     \item \textbf{Internet Infrastructure:} Simulated ISP network providing public connectivity
     \item \textbf{Edge Routers:} Perform NAT and routing functions, providing Internet connectivity for the private networks
-    \item \textbf{VPN Endpoints:} Docker containers hosting the actual VPN software (server and client)
+    \item \textbf{VPN Endpoints:} Docker containers hosting the actual VPN software 
 \end{itemize}
 
 This topology effectively demonstrates how end-to-end VPN technology enables secure communication between hosts in different private networks across untrusted public infrastructure, representing common real-world deployment scenarios where VPN software runs directly on the endpoints rather than on gateway devices.
@@ -75,7 +75,7 @@ Each component in the network topology serves a specific purpose in demonstratin
 The ISP router simulates Internet Service Provider infrastructure and provides:
 
 \begin{itemize}
-    \item \textbf{Internet Connectivity:} DHCP-assigned public IP address with MAC address spoofing for network access.
+    \item \textbf{Internet Connectivity:} DHCP-assigned public IP address with MAC address spoofing for network access (Explained later).
     \item \textbf{Inter-Site Routing:} Routes traffic between the two remote sites through simulated Internet infrastructure
     \item \textbf{NAT Traversal Support:} Enables VPN protocols to function through Network Address Translation
     \item \textbf{Public IP Assignment:} Provides public addressing for both edge routers

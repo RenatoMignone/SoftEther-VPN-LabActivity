@@ -1,4 +1,4 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,10pt]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage[margin=2.5cm]{geometry}
@@ -44,17 +44,56 @@
 
 \begin{document}
 
-% Title page
-\maketitle
-\thispagestyle{empty}
+% Custom title page
+\begin{titlepage}
+\centering
 
-% Add Politecnico logo and license section
+% Top spacing
+\vspace*{2cm}
+
+% University logo
+\includegraphics[width=0.4\textwidth]{../resources/General/polito_logo.png}
+
+\vspace{1.5cm}
+
+% Main title
+{\Huge \textbf{SoftEther VPN Lab Activity}}
+
+\vspace{0.5cm}
+
+% Subtitle
+{\LARGE Virtual Private Networks Across the Internet}
+
+\vspace{1cm}
+
+% Horizontal line
+\rule{\textwidth}{1pt}
+
+\vspace{2cm}
+
+% Author information
+{\Large \textbf{Renato Mignone}}
+
+\vspace{0.5cm}
+
+{\large Student ID: s336973}
+
+\vspace{1cm}
+
+{\large MSc in Cybersecurity Engineering}
+
+\vspace{0.5cm}
+
+{\large Politecnico di Torino}
+
+\vspace{2cm}
+
 \vfill
-\begin{center}
-\includegraphics[width=0.3\textwidth]{../resources/General/polito_logo.png}
-\end{center}
 
-\newpage
+% Bottom text
+{\small Network and Cloud Security Laboratory Activity}
+
+\end{titlepage}
 
 % License page
 \input{../sections/00_license.tex}
@@ -63,6 +102,7 @@
 
 % Table of contents
 \tableofcontents
+\thispagestyle{empty}
 \newpage
 
 % Main content
@@ -73,8 +113,7 @@
 \input{../sections/05_softether_server.tex}
 \input{../sections/06_ipsec_configuration.tex}
 \input{../sections/07_tls_configuration.tex}
-\input{../sections/08_verification_analysis.tex}
-\input{../sections/09_conclusion.tex}
+\input{../sections/08_conclusion.tex}
 
 % Bibliography (if needed)
 % \bibliography{references}

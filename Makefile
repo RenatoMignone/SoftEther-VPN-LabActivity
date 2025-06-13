@@ -1,6 +1,7 @@
 compile:
 	mkdir -p Output
 	cd main && pdflatex -output-directory=../Output SoftEther_VPN_Lab.tex
+	cd main && pdflatex -output-directory=../Output SoftEther_VPN_Lab.tex
 	mv Output/SoftEther_VPN_Lab.pdf ./
 
 clean:

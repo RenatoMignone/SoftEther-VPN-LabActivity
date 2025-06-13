@@ -2,7 +2,7 @@
 
 \section{Introduction}
 
-This laboratory activity focuses on the implementation and analysis of Virtual Private Networks (VPNs) using SoftEther VPN technology across an Internet infrastructure. VPNs are fundamental network security solutions that provide secure connectivity over shared, potentially untrusted networks by creating encrypted tunnels that preserve the confidentiality, integrity, and authenticity of data transmission.
+This laboratory activity focuses on the implementation and analysis of \textbf{Virtual Private Networks} (VPNs) using SoftEther VPN technology across an Internet infrastructure. VPNs are fundamental network security solutions that provide secure connectivity over shared, potentially untrusted networks by creating encrypted tunnels that preserve the confidentiality, integrity, and authenticity of data transmission.
 
 The objective of this lab is to demonstrate how modern VPN technologies can establish secure communication channels between geographically distributed networks, simulating real-world scenarios where branch offices or remote users need secure access to corporate resources. Through practical implementation, we will explore two distinct VPN protocols: IPSec and TLS/SSL, analyzing their different approaches to achieving network security.
 
@@ -28,6 +28,7 @@ The primary goals of this laboratory activity include:
 
 SoftEther VPN is a multi-protocol VPN software that supports various VPN protocols including IPSec, L2TP, OpenVPN (TLS/SSL), and proprietary protocols. Developed by the University of Tsukuba, it provides a unified platform for implementing different VPN technologies, making it an excellent choice for educational and research purposes.
 
+\noindent
 The key advantages of SoftEther VPN include:
 \begin{itemize}
     \item Multi-protocol support enabling comparison of different VPN approaches
@@ -45,7 +46,7 @@ This laboratory simulates a scenario where two geographically separated private 
     \item \textbf{Server Site:} A private network (10.0.1.0/24) hosting the SoftEther VPN server
     \item \textbf{Client Site:} A remote private network (10.0.2.0/24) with VPN client capabilities
     \item \textbf{Internet Infrastructure:} Simulated ISP network providing connectivity between sites
-    \item \textbf{VPN Gateways:} Edge routers performing NAT and routing functions
+    \item \textbf{VPN Gateways:} Edge routers performing NAT and routing functions, to which a public IP address is assigned
 \end{itemize}
 
 The implementation demonstrates how VPN technology enables secure site-to-site connectivity, allowing hosts in different private networks to communicate as if they were on the same local network, while maintaining security properties across the untrusted Internet infrastructure.
@@ -76,8 +77,10 @@ To successfully complete this laboratory activity, the following system requirem
 \end{itemize}
 \end{tcolorbox}
 
+\noindent
 \textbf{Software Installation:}
 
+\noindent
 The required software can be installed on Ubuntu/Debian systems using the following commands:
 
 \begin{lstlisting}[language=bash]
@@ -113,12 +116,10 @@ This report is organized into the following sections:
     
     \item \textbf{SoftEther VPN Server:} Configuration and deployment of the VPN server with multi-protocol support.
     
-    \item \textbf{IPSec Configuration:} Implementation of IPSec-based VPN using strongSwan client.
+    \item \textbf{IPSec Configuration:} Implementation of IPSec-based VPN using strongSwan.
     
     \item \textbf{TLS Configuration:} Setup of TLS/SSL VPN using OpenVPN client.
-    
-    \item \textbf{Verification and Analysis:} Testing procedures and traffic analysis for both VPN implementations.
-    
+        
 \end{enumerate}
 
 Each section includes practical implementation steps, configuration examples, and analysis of the results, providing a comprehensive understanding of VPN technologies and their real-world applications in network security.

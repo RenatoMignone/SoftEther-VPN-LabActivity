@@ -1,0 +1,72 @@
+\newpage
+
+\section{Conclusion}
+
+This laboratory activity successfully demonstrated the implementation and comparative analysis of Virtual Private Network technologies using SoftEther VPN's multi-protocol capabilities. Through practical configuration and testing, we established secure communication channels between geographically separated networks across a simulated Internet infrastructure.
+
+\subsection{Key Achievements}
+
+The laboratory accomplished its primary objectives by:
+
+\begin{itemize}
+    \item \textbf{Network Infrastructure:} Successfully implemented a realistic GNS3 topology with three Cisco routers, Docker containers, and proper NAT configuration to simulate Internet-based VPN scenarios
+    
+    \item \textbf{Multi-Protocol Implementation:} Configured both IPSec (using strongSwan) and TLS/SSL (using OpenVPN) VPN connections to a single SoftEther VPN server, demonstrating the platform's versatility
+    
+    \item \textbf{Traffic Analysis:} Used Wireshark to analyze VPN establishment phases and encrypted data transmission, observing ISAKMP/ESP packets for IPSec and SSL/TLS records for OpenVPN
+\end{itemize}
+
+\subsection{Protocol Comparison}
+
+The comparative analysis revealed distinct characteristics of each VPN approach:
+
+\textbf{IPSec VPN:}
+\begin{itemize}
+    \item Operates at the network layer with kernel-level integration
+    \item Provides efficient performance but complex configuration
+    \item Requires NAT-T for operation behind NAT devices
+    \item Uses pre-shared key authentication in our implementation
+\end{itemize}
+
+\textbf{TLS/SSL VPN:}
+\begin{itemize}
+    \item Operates in user space with simpler deployment
+    \item Easily traverses firewalls using standard TCP port 443
+    \item Provides certificate-based authentication with X.509 PKI
+    \item Offers greater configuration flexibility but higher CPU overhead
+\end{itemize}
+
+\subsection{Learning Outcomes}
+
+This laboratory provided hands-on experience with:
+
+\begin{itemize}
+    \item \textbf{Network Simulation:} Practical skills in using GNS3 for complex network topology creation and management
+    
+    \item \textbf{VPN Technologies:} Deep understanding of how different VPN protocols establish secure tunnels and handle traffic encapsulation
+    
+    \item \textbf{Security Analysis:} Experience with packet capture and analysis techniques for evaluating VPN security properties
+    
+    \item \textbf{Container Deployment:} Knowledge of Docker container configuration for network service deployment
+\end{itemize}
+
+\subsection{Practical Insights}
+
+The laboratory highlighted important considerations for real-world VPN deployments:
+
+\begin{itemize}
+    \item \textbf{Protocol Selection:} The choice between IPSec and TLS depends on factors such as existing infrastructure, client capabilities, performance requirements, and ease of deployment
+    
+    \item \textbf{NAT Compatibility:} TLS-based solutions generally provide better compatibility with NAT devices and restrictive firewall environments
+    
+    \item \textbf{Security Properties:} Both protocols provide essential VPN security features (confidentiality, integrity, authentication, anti-replay protection) but through different mechanisms and at different network layers
+\end{itemize}
+
+\subsection{Final Remarks}
+
+The SoftEther VPN laboratory successfully demonstrated the practical implementation of multiple VPN technologies within a unified platform. The experience provided valuable insights into VPN protocol differences, network security implementation, and the importance of selecting appropriate technologies based on specific deployment requirements.
+
+The multi-protocol capability of SoftEther VPN proved excellent for educational purposes, enabling direct comparison of different VPN approaches. This laboratory reinforced the critical role of VPN technologies in modern network security and provided practical skills necessary for implementing secure communication solutions in real-world environments.
+
+The knowledge gained through this activity establishes a solid foundation for future work in network security, demonstrating that properly implemented VPN technologies provide robust solutions for protecting network communications across untrusted infrastructure.
+
