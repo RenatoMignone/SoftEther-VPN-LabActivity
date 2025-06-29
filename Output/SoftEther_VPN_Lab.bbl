@@ -1,0 +1,75 @@
+\begin{thebibliography}{10}
+
+\bibitem{softether_official}
+{SoftEther VPN Project}, ``Softether vpn project.''
+  \url{https://www.softether.org/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{rfc4301}
+S.~Kent and K.~Seo, ``Security architecture for the internet protocol.'' RFC
+  4301, December 2005.
+
+\bibitem{ferguson_ipsec}
+N.~Ferguson and B.~Schneier, {\em A Cryptographic Evaluation of IPsec}.
+\newblock Counterpane Internet Security, 1999.
+
+\bibitem{nist_vpn_guide}
+{National Institute of Standards and Technology}, ``Guide to ipsec vpns.''
+  \url{https://csrc.nist.gov/publications/detail/sp/800-77/final}.
+\newblock Special Publication 800-77, Accessed: 2024-12-18.
+
+\bibitem{rfc8446}
+E.~Rescorla, ``The transport layer security (tls) protocol version 1.3.'' RFC
+  8446, August 2018.
+
+\bibitem{openvpn_official}
+{OpenVPN Inc.}, ``Openvpn community.'' \url{https://openvpn.net/community/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{strongswan_official}
+{strongSwan Project}, ``strongswan vpn.'' \url{https://www.strongswan.org/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{strongswan_docs}
+{strongSwan Project}, ``strongswan documentation.''
+  \url{https://docs.strongswan.org/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{rfc3948}
+A.~Huttunen, B.~Swander, V.~Volpe, L.~DiBurro, and M.~Stenberg, ``Udp
+  encapsulation of ipsec esp packets.'' RFC 3948, January 2005.
+
+\bibitem{openvpn_howto}
+{OpenVPN Inc.}, ``Openvpn 2.4 manual.''
+  \url{https://openvpn.net/community-resources/how-to/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{openssl_project}
+{The OpenSSL Project}, ``Openssl cryptography and ssl/tls toolkit.''
+  \url{https://www.openssl.org/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{gns3_official}
+{GNS3 Technologies Inc.}, ``Gns3 network simulator.''
+  \url{https://www.gns3.com/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{gns3_docs}
+{GNS3 Technologies Inc.}, ``Gns3 documentation.'' \url{https://docs.gns3.com/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{docker_official}
+{Docker Inc.}, ``Docker platform.'' \url{https://www.docker.com/}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{siomiz_softether}
+siomiz, ``Softether vpn docker image.''
+  \url{https://hub.docker.com/r/siomiz/softethervpn}.
+\newblock Accessed: 2024-12-18.
+
+\bibitem{ubuntu_docker}
+{Canonical Ltd.}, ``Ubuntu official docker images.''
+  \url{https://hub.docker.com/_/ubuntu}.
+\newblock Accessed: 2024-12-18.
+
+\end{thebibliography}

@@ -2,58 +2,47 @@
 
 \section{Introduction}
 
-This laboratory activity focuses on the implementation and analysis of \textbf{Virtual Private Networks} (VPNs) using SoftEther VPN technology across an Internet infrastructure. VPNs are fundamental network security solutions that provide secure connectivity over shared, potentially untrusted networks by creating encrypted tunnels that preserve the confidentiality, integrity, and authenticity of data transmission.
+This Project involves the implementation and analysis of \textbf{Virtual Private Networks} (VPNs) using \textbf{SoftEther VPN} technology across an Internet infrastructure. VPNs are fundamental network security technologies that provide secure connectivity across shared, potentially untrusted networks by creating encrypted tunnels that preserve the confidentiality, integrity, and authenticity of data transmission.
 
-The objective of this lab is to demonstrate how modern VPN technologies can establish secure communication channels between geographically distributed networks, simulating real-world scenarios where branch offices or remote users need secure access to corporate resources. Through practical implementation, we will explore two distinct VPN protocols: IPSec and TLS/SSL, analyzing their different approaches to achieving network security.
+\noindent
+\\
+The objective of this lab is to demonstrate how modern VPN technologies can establish secure communication channels between geographically separated networks, mimicking real-world scenarios in which branch offices or remote users need secure access to corporate resources. Through practical implementation, we will examine two different VPN protocols: IPSec and TLS/SSL, comparing their different approaches and methods to achieve network security.
 
 \subsection{Laboratory Objectives}
 
-The primary goals of this laboratory activity include:
+The main objectives of this lab activity are:
 
 \begin{itemize}
-    \item \textbf{Understanding VPN Fundamentals:} Explore the theoretical foundations of Virtual Private Networks and their role in modern network security architectures.
+    \item \textbf{VPN Basics:} Learn the essentials of Virtual Private Networks and their application in modern network security architectures.
     
-    \item \textbf{SoftEther VPN Implementation:} Configure and deploy SoftEther VPN server to provide multi-protocol VPN services, as IPSec and TLS-based connections.
+    \item \textbf{SoftEther VPN Deployment:} Install and deploy SoftEther VPN server to utilize multi-protocol VPN services, as IPSec and TLS-based connections.
     
-    \item \textbf{Network Topology Design:} Implement a realistic network topology using GNS3 that simulates Internet connectivity between two remote sites through an ISP infrastructure.
+    \item \textbf{Network Topology Design:} Design a realistic network topology using GNS3 that simulates Internet interconnectivity between two remote sites over an ISP infrastructure.
     
-    \item \textbf{Protocol Comparison:} Analyze and compare different VPN protocols (IPSec vs. TLS) in terms of security properties, performance characteristics, and implementation complexity.
+    \item \textbf{Protocol Comparison:} Contrast and compare different VPN protocols (IPSec vs. TLS) in terms of security features and complexity.
     
-    \item \textbf{Traffic Analysis:} Perform detailed packet analysis using Wireshark to understand how different VPN protocols encapsulate and protect network traffic.
+    \item \textbf{Traffic Analysis:} Perform packet capture with Wireshark to observe how differently the VPN protocols encapsulate and protect network traffic differently.
     
-    \item \textbf{Security Assessment:} Evaluate the security features provided by each VPN implementation, including encryption, authentication, and integrity protection.
-\end{itemize}
-
-\subsection{SoftEther VPN Overview}
-
-SoftEther VPN is a multi-protocol VPN software that supports various VPN protocols including IPSec, L2TP, OpenVPN (TLS/SSL), and proprietary protocols. Developed by the University of Tsukuba, it provides a unified platform for implementing different VPN technologies, making it an excellent choice for educational and research purposes.
-
-\noindent
-The key advantages of SoftEther VPN include:
-\begin{itemize}
-    \item Multi-protocol support enabling comparison of different VPN approaches
-    \item Cross-platform compatibility (Windows, Linux, macOS)
-    \item High performance with optimized networking code
-    \item Comprehensive logging and monitoring capabilities
-    \item Support for complex network topologies and routing scenarios
+    \item \textbf{Security Assessment:} Examine the security mechanisms provided by each VPN implementation, including encryption, authentication, and integrity protection.
 \end{itemize}
 
 \subsection{Laboratory Environment and Network Topology}
 
-This laboratory simulates a scenario where two geographically separated private networks need to establish secure communication across the Internet. The topology consists of:
+This lab simulates a scenario in which two geographically separated private networks need to commmunicate securely over the Internet. The topology consists of:
 
 \begin{itemize}
     \item \textbf{Server Site:} A private network (10.0.1.0/24) hosting the SoftEther VPN server
-    \item \textbf{Client Site:} A remote private network (10.0.2.0/24) with VPN client capabilities
-    \item \textbf{Internet Infrastructure:} Simulated ISP network providing connectivity between sites
-    \item \textbf{VPN Gateways:} Edge routers performing NAT and routing functions, to which a public IP address is assigned
+    \item \textbf{Client Site:} A remote private network (10.0.2.0/24) with VPN client capability
+    \item \textbf{Internet Infrastructure:} Simulated ISP network providing connectivity between the sites
+    \item \textbf{VPN Gateways:} Edge routers providing NAT and routing capabilities, to which a public IP address is assigned
 \end{itemize}
 
-The implementation demonstrates how VPN technology enables secure site-to-site connectivity, allowing hosts in different private networks to communicate as if they were on the same local network, while maintaining security properties across the untrusted Internet infrastructure.
+\noindent
+The configuration demonstrates how VPN technology facilitates secure site-to-site connections, allowing hosts whithin different private networks to communicate as if connected to the same local network, while preserving security attributes across the untrusted Internet infrastructure.
 
 \subsection{System Requirements}
 
-To successfully complete this laboratory activity, the following system requirements must be met:
+In order to successfully complete this lab activity, the following system requirements must be met:
 
 \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=System Requirements]
 \textbf{Operating System:}
@@ -64,15 +53,15 @@ To successfully complete this laboratory activity, the following system requirem
 
 \textbf{Software Requirements:}
 \begin{itemize}
-    \item \textbf{GNS3:} Network simulation platform
-    \item \textbf{Docker:} Container platform for VPN endpoints
+    \item \textbf{GNS3:} Graphical Network Simulator-3, a network simulation platform for simulating realistic network topologies
+    \item \textbf{Docker:} Container system for VPN endpoints
     \item \textbf{Wireshark:} Network protocol analyzer
 \end{itemize}
 
 \textbf{Hardware Requirements:}
 \begin{itemize}
-    \item Minimum 8GB RAM (16GB recommended for optimal performance)
-    \item 20GB available disk space
+    \item At least 4GB RAM (8GB highly recommended for high performance)
+    \item 20GB free disk space
     \item Network interface with Internet connectivity
 \end{itemize}
 \end{tcolorbox}
@@ -81,12 +70,9 @@ To successfully complete this laboratory activity, the following system requirem
 \textbf{Software Installation:}
 
 \noindent
-The required software can be installed on Ubuntu/Debian systems using the following commands:
+The following commands can be used to install the necessary software on Ubuntu/Debian systems:
 
 \begin{lstlisting}[language=bash]
-# Update package repositories
-sudo apt update
-
 # Install GNS3 and dependencies
 sudo apt install gns3-gui gns3-server
 
@@ -101,26 +87,26 @@ sudo usermod -aG docker $USER
 sudo usermod -aG wireshark $USER
 \end{lstlisting}
 
-Note: After installation, a logout and login cycle may be required for group membership changes to take effect. The VPN client software (strongSwan for IPSec and OpenVPN for TLS) will be installed inside the Docker containers as part of the laboratory setup.
+Note: An install and login cycle may be required after installation in order for group membership changes to take effect. The VPN client programs (strongSwan for IPSec and OpenVPN for TLS) will be pre-installed inside the Docker containers during lab setup.
 
-\subsection{Laboratory Structure}
+\subsection{Lab Structure}
 
-This report is organized into the following sections:
+The report is organized into these sections:
 
 \begin{enumerate}
-    \item \textbf{Theoretical Background:} Comprehensive overview of VPN technologies, SoftEther VPN architecture, and the security protocols involved.
+    \item \textbf{Theoretical Background:} Introduction to VPN technologies, SoftEther VPN architecture, and employed security protocols.
     
-    \item \textbf{Network Topology:} Detailed description of the simulated network infrastructure and addressing scheme.
+    \item \textbf{Network Topology:} Schematic network description employed during simulation and IP addressing strategy.
     
-    \item \textbf{Initial Configuration:} Step-by-step setup of the GNS3 environment, routers, and container infrastructure.
+    \item \textbf{Initial Configuration:} Setup of the GNS3 environment, the routers, and the container infrastructure.
     
-    \item \textbf{SoftEther VPN Server:} Configuration and deployment of the VPN server with multi-protocol support.
+    \item \textbf{SoftEther VPN Server:} Installation of the VPN server with multi-protocol support.
     
-    \item \textbf{IPSec Configuration:} Implementation of IPSec-based VPN using strongSwan.
+    \item \textbf{IPSec Configuration:} StrongSwan-based IPSec-based VPN implementation.
     
-    \item \textbf{TLS Configuration:} Setup of TLS/SSL VPN using OpenVPN client.
+    \item \textbf{TLS Configuration:} OpenVPN client-based TLS/SSL VPN implementation.
         
 \end{enumerate}
 
-Each section includes practical implementation steps, configuration examples, and analysis of the results, providing a comprehensive understanding of VPN technologies and their real-world applications in network security.
+Each section contains in-practice implementation steps, configuration examples, and result analysis, providing a thorough overview of VPN technologies and applications in real-world contexts.
 

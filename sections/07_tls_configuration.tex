@@ -27,6 +27,7 @@ openvpn --show-digests | head -10
 Unlike IPSec's pre-shared key approach, OpenVPN uses X.509 certificates for authentication, providing stronger security and better scalability.
 
 \noindent
+\\
 \textbf{Required Certificate Files:}
 
 \begin{itemize}
@@ -56,6 +57,7 @@ ciao
     \item \textbf{Username:} user1 (matches SoftEther server user configuration)
     \item \textbf{Password:} ciao (matches server's user password)
     \item \textbf{Security:} File should have restricted permissions (600) in production
+    \item \textbf{Authentication Layer:} These credentials are used for application-layer authentication after TLS handshake completion, not during the handshake itself
 \end{itemize}
 
 \subsection{OpenVPN Configuration Analysis}
@@ -101,12 +103,14 @@ verb 4                                   # Verbosity level
 The OpenVPN configuration implements several security mechanisms:
 
 \begin{enumerate}
-    \item \textbf{Server Authentication:} X.509 certificate validation ensures server identity
-    \item \textbf{Certificate Name Verification:} CN matching prevents man-in-the-middle attacks
-    \item \textbf{User Authentication:} Username/password provides additional access control
+    \item \textbf{Server Authentication:} X.509 certificate ensures server identity during TLS handshake
+    \item \textbf{Certificate Name Verification:} CN prevents man-in-the-middle attacks during TLS handshake
     \item \textbf{Strong Encryption:} AES-128-CBC provides confidentiality
     \item \textbf{Transport Security:} TLS transport layer provides additional protection
 \end{enumerate}
+
+\noindent
+\textbf{Authentication Process Clarification:} The TLS handshake process only involves server certificate validation. The user credentials (user1/ciao) are transmitted and validated within the established TLS tunnel as an additional application-layer authentication step, providing defense-in-depth security.
 
 \subsection{TLS Handshake and Connection}
 
@@ -125,9 +129,6 @@ openvpn --config softether.ovpn
 
 # Alternative: Run in background
 openvpn --config softether.ovpn --daemon
-
-# Check connection status
-ps aux | grep openvpn
 \end{lstlisting}
 
 \subsubsection{Connection Verification}
@@ -137,9 +138,6 @@ Successful TLS tunnel establishment can be verified through several indicators:
 \begin{lstlisting}[language=bash]
 # Check TUN interface creation
 ip addr show | grep tun
-
-# Verify VPN routes
-ip route show | grep tun
 
 # Test connectivity to SoftEther SecureNAT
 ping 192.168.30.1
@@ -154,21 +152,7 @@ ip addr show tun0
     \item "Initialization Sequence Completed" message appears
     \item TUN interface (tun0) is created with VPN IP address
     \item Routes are added for VPN traffic
-    \item Connectivity to SecureNAT gateway is established
 \end{itemize}
-
-\subsubsection{TLS Handshake Analysis}
-
-The TLS handshake process includes several critical steps:
-
-\begin{enumerate}
-    \item \textbf{TCP Connection:} Establish TCP connection to server port 443
-    \item \textbf{TLS Handshake:} Negotiate cipher suites and exchange certificates
-    \item \textbf{Server Authentication:} Verify server certificate against CA
-    \item \textbf{Key Exchange:} Establish session keys for encryption
-    \item \textbf{User Authentication:} Submit username/password credentials
-    \item \textbf{Tunnel Establishment:} Create TUN interface and configure routing
-\end{enumerate}
 
 \subsection{Encrypted Traffic Analysis}
 
@@ -178,7 +162,15 @@ TLS-based VPNs provide comprehensive encryption at the session layer, protecting
 
 To observe TLS/OpenVPN traffic in detail, it is highly recommended to open a Wireshark instance on one of the network cables connecting the client and server infrastructure. This allows real-time analysis of the VPN establishment and data transmission phases.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../resources/Images/TLS_Packets.png}
+\caption{TSL VPN Packets in Wireshark}
+\label{fig:tls_packets}
+\end{figure}
+
 \noindent
+\\
 \textbf{TLS Handshake and Connection Establishment Phase:}
 
 \noindent
@@ -188,20 +180,21 @@ During the initial TLS VPN connection setup, Wireshark will capture SSL/TLS hand
     \item \textbf{TCP Connection:} Initial TCP connection establishment on port 443
     \item \textbf{TLS Handshake packets:} SSL/TLS negotiation between client and server
     \item \textbf{Certificate Exchange:} Server certificate transmission and validation
-    \item \textbf{OpenVPN Control Messages:} Protocol-specific negotiation and authentication
 \end{itemize}
 
 \noindent
+\\
 \textbf{Active Tunnel Communication Phase:}
 
 \noindent
-Once the TLS VPN tunnel is established and active communication begins, the packet capture will show encrypted OpenVPN data packets. In the case of TLS VPN, the tunnel between the hosts works in a specific way that demonstrates the complete end-to-end functionality.\\
+Once the TLS VPN tunnel is established and active communication begins, the packet capture will show encrypted SSL data packets. 
 
 \noindent
+\\
 \textbf{Important Traffic Flow Observation:}
 
 \noindent
-When the client initiates communication (such as a ping command) to destinations beyond the VPN server, the ping message travels through the entire TLS tunnel to be decapsulated and transmitted by the server on behalf of the client. This means that when observing traffic with Wireshark, the source address of the ping message that appears in the packet capture will not be the original client address (10.0.2.2), but rather the SoftEther server's SecureNAT IP address (192.168.30.1).
+When the client initiates communication (such as a ping command) to destinations beyond the VPN server, the ping message travels through the entire TLS tunnel to be decapsulated and transmitted by the server on behalf of the client. This means that when observing traffic with Wireshark, the source address of the ping message that appears in the packet capture will not be the original client address, but rather the SoftEther server's SecureNAT IP address.
 
 \noindent
 This behavior occurs because:
@@ -215,30 +208,8 @@ This behavior occurs because:
 \begin{lstlisting}[language=bash]
 # Test communication to generate OpenVPN traffic and observe source translation
 ping 192.168.30.1  # From client to SoftEther SecureNAT
-# The ping will appear in Wireshark with source IP 192.168.30.1, not 10.0.2.2
 \end{lstlisting}
 
-\noindent
-During active communication, you will observe:
-\begin{itemize}
-    \item \textbf{OpenVPN Data Packets:} Encrypted application data within TLS records
-    \item \textbf{SSL/TLS Records:} All traffic encapsulated within TLS protocol
-    \item \textbf{Encrypted Payload:} Data content completely protected by TLS encryption
-    \item \textbf{TCP Reliability:} Reliable delivery through TCP transport protocol
-    \item \textbf{Source Address Translation:} Traffic appears to originate from the VPN server's SecureNAT IP
-\end{itemize}
-
-\subsubsection{Encryption Characteristics}
-
-The TLS implementation provides several security properties:
-
-\begin{itemize}
-    \item \textbf{Confidentiality:} AES-128-CBC encryption protects data content
-    \item \textbf{Integrity:} HMAC ensures data has not been modified
-    \item \textbf{Authentication:} Certificates and credentials verify endpoint identity
-    \item \textbf{Perfect Forward Secrecy:} Session keys are independent of long-term keys
-    \item \textbf{Replay Protection:} Sequence numbers prevent packet replay attacks
-\end{itemize}
 
 \subsubsection{Connection Termination}
 

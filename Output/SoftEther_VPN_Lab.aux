@@ -4,77 +4,90 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{4}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Laboratory Objectives}{4}{subsection.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}SoftEther VPN Overview}{4}{subsection.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Laboratory Environment and Network Topology}{4}{subsection.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}System Requirements}{5}{subsection.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.5}Laboratory Structure}{5}{subsection.1.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Theoretical Background}{7}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Virtual Private Networks (VPNs)}{7}{subsection.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}SoftEther VPN Architecture}{7}{subsection.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}IPSec Protocol Suite}{8}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Laboratory Environment and Network Topology}{4}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}System Requirements}{4}{subsection.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.4}Lab Structure}{5}{subsection.1.4}\protected@file@percent }
+\citation{softether_official}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Theoretical Background}{6}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Virtual Private Networks (VPNs)}{6}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}SoftEther VPN Architecture}{6}{subsection.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces SoftEther VPN Multi-Protocol Architecture}}{6}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:softether_architecture}{{1}{6}{SoftEther VPN Multi-Protocol Architecture}{figure.caption.1}{}}
+\citation{rfc4301}
+\citation{ferguson_ipsec}
+\citation{nist_vpn_guide}
+\citation{rfc8446}
+\citation{openvpn_official}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}IPSec Protocol Suite}{7}{subsection.2.3}\protected@file@percent }
+\citation{strongswan_official,strongswan_docs}
+\citation{rfc3948}
+\citation{openvpn_official,openvpn_howto}
+\citation{openssl_project}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.4}TLS/SSL for VPN Implementation}{8}{subsection.2.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Client-Side VPN Technologies}{8}{subsection.2.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Comparative Analysis Framework}{9}{subsection.2.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Network Topology and Architecture}{10}{section.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Topology Overview}{10}{subsection.3.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces GNS3 Network Topology - VPN Across the Internet}}{10}{figure.caption.1}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:gns3_topology}{{1}{10}{GNS3 Network Topology - VPN Across the Internet}{figure.caption.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}IP Addressing Scheme}{10}{subsection.3.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Network Interface Configuration}}{11}{table.caption.2}\protected@file@percent }
-\newlabel{tab:ip_addressing}{{1}{11}{Network Interface Configuration}{table.caption.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Device Roles and Functions}{11}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}ISP Router (R1-Router-ISP)}{11}{subsubsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Server-Side Router (R2-Router-Server)}{11}{subsubsection.3.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Client-Side Router (R3-Router-Client)}{12}{subsubsection.3.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4}SoftEther VPN Server Container}{12}{subsubsection.3.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.5}VPN Client Container}{12}{subsubsection.3.3.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Network Communication Flow}{12}{subsection.3.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Security Considerations}{12}{subsection.3.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Comparative Analysis Framework}{8}{subsection.2.6}\protected@file@percent }
+\citation{gns3_official}
+\citation{gns3_docs}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Network Topology and Architecture}{9}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}GNS3 Network Simulation Platform}{9}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Topology Overview}{9}{subsection.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces GNS3 Network Topology - VPN Across the Internet}}{9}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:gns3_topology}{{2}{9}{GNS3 Network Topology - VPN Across the Internet}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}IP Addressing Scheme}{10}{subsection.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Network Interface Configuration}}{10}{table.caption.3}\protected@file@percent }
+\newlabel{tab:ip_addressing}{{1}{10}{Network Interface Configuration}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Device Roles and Functions}{10}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}ISP Router (R1-Router-ISP)}{10}{subsubsection.3.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Server-Side Router (R2-Router-Server)}{11}{subsubsection.3.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}Client-Side Router (R3-Router-Client)}{11}{subsubsection.3.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.4}SoftEther VPN Server Container}{11}{subsubsection.3.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.5}VPN Client Container}{11}{subsubsection.3.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Network Communication Flow}{12}{subsection.3.5}\protected@file@percent }
+\citation{docker_official}
+\citation{siomiz_softether}
+\citation{ubuntu_docker}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Initial Network Configuration}{13}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}GNS3 Environment Setup}{13}{subsection.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Device Import and Template Creation}{13}{subsubsection.4.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Container Configuration}{14}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Server Container Setup}{14}{subsubsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Client Container Setup}{14}{subsubsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Server Container Configuration}{14}{subsubsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Client Container Setup}{15}{subsubsection.4.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Project Startup and Device Access}{15}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Starting the GNS3 Project}{15}{subsubsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Launching the GNS3 Project}{15}{subsubsection.4.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Accessing Device Terminals}{15}{subsubsection.4.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Router Configuration}{15}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Router Configuration}{16}{subsection.4.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}ISP Router (R1-Router-ISP)}{16}{subsubsection.4.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Server-Side Router (R2-Router-Server)}{17}{subsubsection.4.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.3}Client-Side Router (R3-Router-Client)}{17}{subsubsection.4.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Container Network Configuration}{18}{subsection.4.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.1}Server Network Configuration}{18}{subsubsection.4.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.2}Client Network Configuration}{18}{subsubsection.4.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Basic Connectivity Testing}{18}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Basic Connectivity Testing}{19}{subsection.4.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.1}Inter-Router Connectivity}{19}{subsubsection.4.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.2}End-to-End Connectivity}{19}{subsubsection.4.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {4.6.3}Service Verification}{19}{subsubsection.4.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Network Infrastructure Validation}{19}{subsection.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Network Infrastructure Verification}{19}{subsection.4.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}SoftEther VPN Server Configuration}{20}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Server Installation and Initialization}{20}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Server Setup and Installation}{20}{subsection.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}Container Deployment}{20}{subsubsection.5.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}Service Verification}{20}{subsubsection.5.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Configuration File Analysis}{20}{subsection.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Core Server Settings}{20}{subsubsection.5.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Protocol Listener Configuration}{21}{subsubsection.5.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Virtual Hub and User Management}{21}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Default Virtual Hub Configuration}{21}{subsubsection.5.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Default Virtual Hub Configuration}{22}{subsubsection.5.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}User Account Management}{22}{subsubsection.5.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}IPSec Protocol Configuration}{22}{subsection.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.1}IPSec Settings}{22}{subsubsection.5.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.5}SSL/TLS Protocol Configuration}{22}{subsection.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.1}TLS Settings and Certificates}{22}{subsubsection.5.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.1}TLS Settings and Certificates}{23}{subsubsection.5.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.6}SecureNAT Configuration}{23}{subsection.5.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.6.1}Server Certificates}{23}{subsubsection.5.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.6.2}Security Policies}{23}{subsubsection.5.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Operational Verification}{23}{subsection.5.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.7.1}Service Status Check}{23}{subsubsection.5.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.7.2}Configuration Validation}{24}{subsubsection.5.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Operational Verification}{24}{subsection.5.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {6}IPSec VPN Configuration}{25}{section.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}strongSwan Client Setup}{25}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Software Installation}{25}{subsubsection.6.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}IPSec Configuration Files}{25}{subsection.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}ipsec.conf Analysis}{25}{subsubsection.6.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}ipsec.secrets Configuration}{26}{subsubsection.6.2.2}\protected@file@percent }
@@ -84,27 +97,45 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {6.3.3}Debug and Troubleshooting}{27}{subsubsection.6.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Traffic Analysis}{27}{subsection.6.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {6.4.1}Wireshark Packet Analysis}{27}{subsubsection.6.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}TLS/SSL VPN Configuration}{28}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}OpenVPN Client Setup}{28}{subsection.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.1}Software Installation}{28}{subsubsection.7.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.2}Certificate and Key Management}{28}{subsubsection.7.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Certificate and Credential Management}{28}{subsection.7.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}User Credentials}{28}{subsubsection.7.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}OpenVPN Configuration Analysis}{28}{subsection.7.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1}Complete Configuration File}{29}{subsubsection.7.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.2}Security Features}{29}{subsubsection.7.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}TLS Handshake and Connection}{29}{subsection.7.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.1}Connection Establishment Process}{29}{subsubsection.7.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.2}Connection Verification}{30}{subsubsection.7.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.3}TLS Handshake Analysis}{30}{subsubsection.7.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Encrypted Traffic Analysis}{30}{subsection.7.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.1}Wireshark Packet Analysis}{30}{subsubsection.7.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.2}Encryption Characteristics}{31}{subsubsection.7.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.3}Connection Termination}{31}{subsubsection.7.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces IPSec VPN Traffic Analysis - ISAKMP and ESP Protocol Exchange}}{27}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:ipsec_packets}{{3}{27}{IPSec VPN Traffic Analysis - ISAKMP and ESP Protocol Exchange}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}TLS/SSL VPN Configuration}{29}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}OpenVPN Client Setup}{29}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.1}Software Installation}{29}{subsubsection.7.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.1.2}Certificate and Key Management}{29}{subsubsection.7.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Certificate and Credential Management}{29}{subsection.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.2.1}User Credentials}{29}{subsubsection.7.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}OpenVPN Configuration Analysis}{30}{subsection.7.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.1}Complete Configuration File}{30}{subsubsection.7.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.3.2}Security Features}{30}{subsubsection.7.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.4}TLS Handshake and Connection}{30}{subsection.7.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.1}Connection Establishment Process}{31}{subsubsection.7.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.4.2}Connection Verification}{31}{subsubsection.7.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.5}Encrypted Traffic Analysis}{31}{subsection.7.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.1}Wireshark Packet Analysis}{31}{subsubsection.7.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces TSL VPN Packets in Wireshark}}{31}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:tls_packets}{{4}{31}{TSL VPN Packets in Wireshark}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {7.5.2}Connection Termination}{32}{subsubsection.7.5.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{33}{section.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Key Achievements}{33}{subsection.8.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Protocol Comparison}{33}{subsection.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Learning Outcomes}{33}{subsection.8.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Practical Insights}{34}{subsection.8.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}Final Remarks}{34}{subsection.8.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Major Achievements}{33}{subsection.8.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Learning Outcomes}{33}{subsection.8.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Practical Insights}{33}{subsection.8.3}\protected@file@percent }
+\bibstyle{ieeetr}
+\bibdata{references}
+\bibcite{softether_official}{1}
+\bibcite{rfc4301}{2}
+\bibcite{ferguson_ipsec}{3}
+\bibcite{nist_vpn_guide}{4}
+\bibcite{rfc8446}{5}
+\bibcite{openvpn_official}{6}
+\bibcite{strongswan_official}{7}
+\bibcite{strongswan_docs}{8}
+\bibcite{rfc3948}{9}
+\bibcite{openvpn_howto}{10}
+\bibcite{openssl_project}{11}
+\bibcite{gns3_official}{12}
+\bibcite{gns3_docs}{13}
+\bibcite{docker_official}{14}
+\bibcite{siomiz_softether}{15}
+\bibcite{ubuntu_docker}{16}
 \gdef \@abspage@last{35}

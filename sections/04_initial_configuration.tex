@@ -2,18 +2,18 @@
 
 \section{Initial Network Configuration}
 
-This section details the step-by-step process of setting up the laboratory environment, including GNS3 configuration, router setup, and Docker container deployment. The configuration establishes the basic network infrastructure that will support the VPN implementations.
+This section describes the step-by-step laboratory environment setup process, including GNS3 setup, router configuration, and Docker container deployment. The configuration creates the underlying network infrastructure to be utilized by the VPN implementations.
 
 \subsection{GNS3 Environment Setup}
 
-The laboratory utilizes GNS3 (Graphical Network Simulator-3) to create a realistic network topology. GNS3 provides the platform for simulating Cisco routers, Docker containers, and network connectivity required for the VPN demonstration.
+Here we detail the technical steps required for implementing the network topology presented in Section 3. All device connections and configuration follow architecture specs provided in the GNS3 Network Simulation Platform subsection.
 
 \subsubsection{Device Import and Template Creation}
 
 \textbf{Cisco Router Template:}
 
 \noindent
-The topology requires Cisco 7200 routers running IOS version 124-24.T5. This specific IOS image is chosen because it represents a freely available alternative to modern commercial Cisco IOS versions. While newer platforms like IOSv (IOS Virtual) offer enhanced features and performance, they require valid Cisco licensing agreements which can be costly for educational purposes. The 124-24.T5 image, although older and not widely deployed in current production environments, provides all the fundamental routing and NAT capabilities required for this laboratory exercise. To import the router template:
+We have chosen for this activity the Cisco 7200 router running IOS version 124-24.T5. This specific IOS image is chosen because it is a freely downloadable equivalent of modern commercial Cisco IOS releases. Whilst newer platforms like IOSv (IOS Virtual) are faster and more feature-rich, they require valid Cisco license agreements that are too costly for learning purposes. The 124-24.T5 image, although older and not usually found in modern production settings, has all the fundamental routing and NAT functionality for this lab exercise. To import the router template:
 
 \begin{enumerate}
     \item Open GNS3 and click the \textbf{router icon} in the left panel
@@ -21,39 +21,42 @@ The topology requires Cisco 7200 routers running IOS version 124-24.T5. This spe
     \item Choose \textbf{"Install an appliance from the GNS3 server"}
     \item Filter by \textbf{"CISCO"} and locate \textbf{"Cisco 7200"}
     \item Install the template and select version \textbf{"124-24.T5"}
-    \item Import the router image file to complete the setup
+    \item Load the router image file to complete the setup
 \end{enumerate}
 
 \noindent
 \textbf{Docker Container Setup:}
 
 \noindent
-Two Docker containers are required for the VPN endpoints:
+Two Docker containers are required for the VPN endpoints \cite{docker_official}:
 
 \begin{itemize}
-    \item \textbf{Server Container Image:} \texttt{siomiz/softethervpn:latest}
-    \item \textbf{Client Container Image:} \texttt{ubuntu:latest}
+    \item \textbf{Server Container Image:} \texttt{siomiz/softethervpn:latest} \cite{siomiz_softether}
+    \item \textbf{Client Container Image:} \texttt{ubuntu:latest} \cite{ubuntu_docker}
 \end{itemize}
 
 \noindent
-To add containers to the GNS3 project:
+To insert containers in GNS3 project:
 
 \begin{enumerate}
-    \item Navigate to Edit → Preferences in GNS3
-    \item Select "Docker containers" from the left panel
-    \item Click "New" to add a container
+    \item Navigate to \textbf{Edit → Preferences} in GNS3
+    \item Select \textbf{"Docker containers"} from the left panel
+    \item Click \textbf{"New"} to add a container
     \item Enter the image name (e.g., \texttt{siomiz/softethervpn:latest})
     \item Configure the container name and complete the setup
-    \item Repeat for the Ubuntu client container
+    \item Do the same for the Ubuntu client container
 \end{enumerate}
 
 \noindent
-You will now see the containers in the left panel of GNS3, ready to be dragged into the workspace. So now you can recreate the same topology as shown in the figure in the section 3 of this document. Clicking on the wire on the left panel, you will be able to connect the devices together, creating the network topology defined. Choose the right interfaces for each connection as shown in the table in the section 3.2.\\
+You should be able to see the containers in the left panel of GNS3 now, ready to be pulled into the workspace. So now you can configure the same topology as shown in Figure \ref{fig:gns3_topology} in Section 3 of this document. 
 
 \noindent
-\textbf{Important Router Configuration Note:}
+Clicking on the wire on the left panel, you can connect the devices to each other, creating the network topology described. Choose the correct interfaces for each link as shown in the table in Section 3.2. The interfaces connected from the Client router and Server one to the internal nodes, are always the FastEthernet0/0, instead the FastEthernet0/1 one is the one connected to the ISP. The ISP with FastEthernet0/0 is connected to the server router, 0/1 is connected instead to the client router. There is, here besides, another interface, the one of FastEthernet1/0, which will be instead plugged into the internet bridge, so with the cloud and directly to the right interface of the host machine that provides the internet connection.
+
 \noindent
-Before proceeding with the router configurations, you must configure the ISP router to have three interfaces instead of the default two. This is necessary because the ISP router needs to connect to both edge routers and the Internet cloud. To configure the ISP router slots:
+\textbf{Critical Router Configuration Note:}
+\noindent
+Before proceeding with the router configurations, you must configure the ISP router to have three interfaces instead of the default two. This is needed because the ISP router must connect to both edge routers and the Internet cloud. To perform the ISP router configuration:
 
 \begin{enumerate}
     \item Right-click on the ISP router in GNS3
@@ -67,15 +70,15 @@ This configuration change provides the ISP router with three FastEthernet interf
 
 \subsection{Container Configuration}
 
-The Docker containers require specific configuration for persistent storage and network setup.
+The Docker containers must have special configuration for persistent network and storage setup.
 
-\subsubsection{Server Container Setup}
+\subsubsection{Server Container Configuration}
 
-The SoftEther VPN server container needs persistent directories for configuration files:
+SoftEther VPN server container needs permanent directories to store configuration files:
 
 \begin{enumerate}
-    \item Open the server container configuration in GNS3
-    \item Navigate to Advanced Settings
+    \item Open the server container configuration in GNS3 (right-click on the container)
+    \item Navigate to \textbf{Advanced Settings}
     \item Add the following additional directory:
     \begin{itemize}
         \item \texttt{/usr/vpnserver}
@@ -83,29 +86,29 @@ The SoftEther VPN server container needs persistent directories for configuratio
 \end{enumerate}
 
 \noindent
-This directory will be created in the GNS3 project folder, allowing persistent storage of configuration files between container restarts.\\
+This directory will be created in the GNS3 project directory on the local system, which will allow persistent storage of configuration files during restart of the container.
 
 \noindent
 \textbf{Server Configuration File Setup:}
 
 \noindent
-To ensure the SoftEther VPN server starts with the proper configuration, you must place the \texttt{vpn\_server.config} file in the correct persistent directory:
+In order to ensure the SoftEther VPN server starts with the proper configuration, you should place the \texttt{vpn\_server.config} file in the correct persistent directory:
 
 \begin{enumerate}
-    \item Navigate to your GNS3 project directory on the local filesystem
+    \item Navigate to your local file system GNS3 project directory 
     \item Open the \texttt{project-files} folder
-    \item Locate the \texttt{docker} subdirectory
-    \item Find the server container folder (usually named after the container)
-    \item Navigate to the \texttt{usr/vpnserver} directory within the container folder
-    \item Place the \texttt{vpn\_server.config} file in this directory
+    \item Look for the \texttt{docker} subdirectory
+    \item Find the server container folder by means of the container ID
+    \item Enter into the \texttt{usr/vpnserver} directory within the container folder
+    \item Place the \texttt{vpn\_server.config} file there
 \end{enumerate}
 
 \noindent
-This ensures that when the container starts, the SoftEther VPN service will automatically load the pre-configured settings, including user accounts, IPSec settings, and SSL/TLS configurations.
+This will enable the pre-configured settings, like user accounts, IPSec setup, and SSL/TLS configuration, to be loaded automatically when the container starts as started by the SoftEther VPN service.
 
 \subsubsection{Client Container Setup}
 
-The client container requires similar configuration for persistent storage:
+The client container requires similar setup for persistent storage:
 
 \begin{enumerate}
     \item Open the client container configuration in GNS3
@@ -117,7 +120,7 @@ The client container requires similar configuration for persistent storage:
 \textbf{Client Configuration Files Setup:}
 
 \noindent
-The client container requires multiple configuration files for both IPSec and TLS VPN implementations. Place all the following files in the client's persistent directory:
+The client container requires a number of configuration files for IPSec and TLS VPN implementations. Place all the following files in the client's persistent directory:
 
 \begin{enumerate}
     \item Navigate to your GNS3 project directory on the local filesystem
@@ -133,52 +136,54 @@ The client container requires multiple configuration files for both IPSec and TL
 \end{enumerate}
 
 \noindent
-This setup ensures that all necessary VPN client configuration files are available when the container starts, allowing seamless connection to both IPSec and TLS VPN services.
+This setup ensures that all VPN client configuration setups are available when the container boots in order to create smooth connections with both IPSec and TLS VPN servers.
 
 \subsection{Project Startup and Device Access}
 
-Once all configurations are complete and files are properly placed in their persistent directories, you can start the laboratory environment.
+After each of the configurations is completed and files are properly placed inside their persistent folders, you can initiate the lab environment.
 
-\subsubsection{Starting the GNS3 Project}
+\subsubsection{Launching the GNS3 Project}
 
-To start all devices and containers in the project:
+To launch all devices and containers in the project:
 
 \begin{enumerate}
     \item Click the green \textbf{Play button} in the top toolbar of GNS3
-    \item This will start all routers and Docker containers simultaneously
-    \item Wait for all devices to complete their boot process
-    \item Verify that all device icons show a green status indicator
+    \item This will boot every Docker container and router simultaneously
+    \item Wait until all the devices complete their boot sequence
+    \item Ensure that all icons of the devices have a green status icon
 \end{enumerate}
 
 \subsubsection{Accessing Device Terminals}
 
-To interact with the network devices and containers:
+In order to talk to network devices and containers:
 
+\noindent
+\\
 \textbf{For Cisco Routers:}
 \begin{enumerate}
     \item Right-click on any router device
     \item Select \textbf{"Console"} from the context menu
-    \item This opens the router's command-line interface
+    \item This gives access to the router's command-line interface
 \end{enumerate}
 
 \noindent
 \textbf{For Docker Containers:}
 \begin{enumerate}
     \item Right-click on any container (server or client)
-    \item Select \textbf{"Auxiliary Console"} from the context menu
+    \item Choose \textbf{"Auxiliary Console"} from the context menu
     \item This opens the container's terminal interface
-    \item Use this terminal for all container-based commands and configurations
+    \item Use this terminal for all commands and configurations related to containers
 \end{enumerate}
 
-\textbf{Important Note:} For Docker containers, always use the "Auxiliary Console" option rather than the regular console, as it provides the proper terminal interface for interacting with the containerized operating system.
+\textbf{Key Note:} For Docker containers, always use the "Auxiliary Console" option and not the standard console, as it gives the correct terminal interface to work with the containerized operating system.
 
 \subsection{Router Configuration}
 
-Now that you can access the router terminals, proceed with configuring the three routers with specific configurations to simulate realistic Internet connectivity and routing behavior.
+Now that you have access to the router terminals, go ahead and configure the three routers with individual configurations to mimic realistic Internet connectivity and routing behavior.
 
 \subsubsection{ISP Router (R1-Router-ISP)}
 
-The ISP router provides Internet connectivity and inter-site routing. The configuration includes interface setup, MAC address spoofing for DHCP, and routing table entries.
+The ISP router provides Internet connectivity and inter-site routing. The setup includes interface setup, MAC address spoofing for DHCP, and routing table entries.
 
 \begin{lstlisting}[language=bash]
 enable
@@ -218,7 +223,10 @@ write memory
 \textbf{Important Note - MAC Address Spoofing:} 
 
 \noindent
-The MAC address spoofing is necessary because the Politecnico di Torino WiFi network's DHCP server implements MAC address filtering for security purposes. Without using the host machine's MAC address, the DHCP server will not assign a valid IP address to the router interface, preventing Internet connectivity for the simulated network. To obtain your host machine's MAC address:
+This step is required only needed when your host's DHCP server restricts MAC addresses (e.g., Politecnico di Torino WiFi). In other cases, omit this process or adapt accordingly.
+
+\noindent
+The MAC address spoofing is required since the Politecnico di Torino WiFi network's DHCP server uses MAC address filtering to ensure security. Without the use of the host machine's MAC address, the DHCP server will not respond with a valid IP address for the router interface, which denies Internet access for the virtualized network. To know your host machine's MAC address:
 
 \begin{lstlisting}[language=bash]
 # Display all network interfaces and their MAC addresses
@@ -234,8 +242,8 @@ ip a
 \noindent
 Copy the MAC address from your active network interface and convert it to Cisco format by adding dots every four characters:
 \begin{itemize}
-    \item \textbf{Linux format:} 1c:ce:51:3f:98:20
-    \item \textbf{Cisco format:} 1cce.513f.9820
+    \item \textbf{Linux format:} aa:bb:cc:dd:ee:ff
+    \item \textbf{Cisco format:} aabb.ccdd.eeff
 \end{itemize}
 
 Replace \texttt{xxxx.xxxx.xxxx} in the configuration with your converted MAC address.
@@ -410,26 +418,22 @@ Verify that the SoftEther VPN server is running and listening on required ports:
 # Check if SoftEther VPN server is listening
 ss -tuln | grep -E '(443|500|4500)'
 
-# Expected output should show:
-# tcp LISTEN 0.0.0.0:443
-# udp LISTEN 0.0.0.0:500  
-# udp LISTEN 0.0.0.0:4500
 \end{lstlisting}
 
-\subsection{Network Infrastructure Validation}
+\subsection{Network Infrastructure Verification}
 
-At this point, the basic network infrastructure should be operational with:
+Now, the fundamental network infrastructure must be up and running with:
 
 \begin{itemize}
     \item Three routers configured with appropriate IP addressing and routing
     \item NAT services functioning on edge routers
     \item Docker containers with network connectivity
     \item SoftEther VPN server operational and accessible
-    \item Basic inter-site connectivity through the simulated Internet
+    \item Straightforward inter-site connectivity through emulated Internet
 \end{itemize}
 
 \noindent
-This foundation enables the implementation of VPN services detailed in the subsequent sections. Any connectivity issues at this stage should be resolved before proceeding with VPN configuration, as they will prevent proper VPN tunnel establishment.
+This configuration offers the foundation for deployment of VPN services described in the subsequent sections. Any connectivity issues at this point must be resolved before configuring VPN because they will prevent successful creation of VPN tunnels.
 
 \noindent
-The next section will detail the configuration of the SoftEther VPN server to provide multi-protocol VPN services for both IPSec and TLS-based connections.
+The next section will describes how to configure the SoftEther VPN server to provide multi-protocol VPN services for both IPSec and TLS-based connections.

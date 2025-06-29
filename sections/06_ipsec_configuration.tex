@@ -6,10 +6,6 @@ This section details the configuration of the IPSec-based VPN connection using s
 
 \subsection{strongSwan Client Setup}
 
-strongSwan is a complete IPSec implementation for Linux systems that supports both IKEv1 and IKEv2 protocols. It integrates with the Linux kernel's IPSec stack to provide high-performance encrypted tunnels.
-
-\subsubsection{Software Installation}
-
 The strongSwan software was installed during the initial container configuration as part of Section 4. To verify the installation and ensure all components are available:
 
 \begin{lstlisting}[language=bash]
@@ -18,7 +14,6 @@ apt list --installed | grep strongswan
 
 # Check available strongSwan tools
 which ipsec
-ipsec version
 
 \end{lstlisting}
 
@@ -68,13 +63,14 @@ conn softether
     auto=start                          # Auto-start connection
 \end{lstlisting}
 
+\noindent
 \textbf{Configuration Parameter Explanation:}
 
 \begin{itemize}
     \item \textbf{Connection Identity:} \texttt{left/right} parameters define local and remote endpoints
     \item \textbf{Subnet Configuration:} \texttt{leftsubnet} specifies which traffic should be encrypted
     \item \textbf{NAT Traversal:} \texttt{forceencaps=yes} ensures IPSec works through NAT devices
-    \item \textbf{Algorithm Selection:} Encryption with AES-256 for IKE and AES-128 for ESP
+    \item \textbf{Algorithm Selection:} Encryption with AES-256 for IKE and AES-128 for ESP, also here the usage of a weak hash function (SHA1) is only for lab purposes.
     \item \textbf{Authentication:} Pre-shared key (PSK) method matching server configuration
     \item \textbf{Dead Peer Detection:} Automatic tunnel recovery on connection failure
 \end{itemize}
@@ -159,17 +155,40 @@ Understanding how IPSec encapsulates and processes network traffic is crucial fo
 To observe IPSec traffic in detail, it is highly recommended to open a Wireshark instance on one of the network cables connecting the client and server infrastructure. This allows real-time analysis of the VPN establishment and data transmission phases.
 
 \noindent
+\\
 \textbf{IPSec Tunnel Establishment Phase:}
 
 \noindent
-During the initial IPSec connection setup, Wireshark will capture ISAKMP (Internet Security Association and Key Management Protocol) packets. You can start the Wireshark capture instance by right clicking on a wire in GNS3, and then selecting "Start Capture". In this phase you will observe:
+During the initial IPSec connection setup, Wireshark will capture ISAKMP (Internet Security Association and Key Management Protocol) packets. You can start the Wireshark capture instance by right clicking on a wire in GNS3, and then selecting "Start Capture".
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../resources/Images/IPsec_Packets.png}
+\caption{IPSec VPN Traffic Analysis - ISAKMP and ESP Protocol Exchange}
+\label{fig:ipsec_packets}
+\end{figure}
+
+Figure \ref{fig:ipsec_packets} demonstrates a comprehensive IPSec VPN session captured with Wireshark, showing the complete lifecycle of an IPSec tunnel establishment and data transmission. The capture reveals several distinct phases:
+
+\noindent
+
+\textbf{ISAKMP Phase 1 (Main Mode):} The initial packets (frames 26-31) show the ISAKMP Main Mode negotiation on UDP port 500, where the VPN endpoints establish the first Security Association (SA) for protecting subsequent key exchange traffic. This phase includes:
 \begin{itemize}
-    \item \textbf{ISAKMP packets on UDP port 500:} Initial key exchange and authentication
-    \item \textbf{NAT-T packets on UDP port 4500:} NAT traversal negotiation if NAT is detected
-    \item \textbf{Phase 1 and Phase 2 negotiations:} Security Association establishment
+    \item Identity Protection exchange for secure peer authentication
+    \item Negotiation of encryption and authentication algorithms
+    \item Diffie-Hellman key exchange for establishing shared secrets
 \end{itemize}
 
 \noindent
+\\
+\textbf{ISAKMP Phase 2 (Quick Mode):} Following the main mode, Quick Mode packets establish the Security Associations for actual data protection, negotiating the parameters for ESP (Encapsulating Security Payload) tunnels.
+
+\noindent
+\\
+\textbf{ESP Data Transmission:} The latter portion of the capture shows ESP packets carrying encrypted user data. These packets demonstrate the IPSec tunnel in operation, where all original IP traffic is encapsulated within ESP headers and encrypted according to the negotiated algorithms.
+
+\noindent
+\\
 \textbf{Active Tunnel Communication Phase:}
 
 \noindent
